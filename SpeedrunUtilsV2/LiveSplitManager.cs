@@ -62,6 +62,9 @@ namespace SpeedrunUtilsV2
                         break;
                     }
                 }
+
+                if (value == Status.Disconnected)
+                    ConnectionManager.SetStream(null);
                 _connectionStatus = value;
             }
         }
@@ -81,30 +84,26 @@ namespace SpeedrunUtilsV2
 
             using (var client = new TcpClient())
             {
-                if (!TryConnectToLiveSplit(client))
+                if (TryConnectToLiveSplit(client))
                 {
-                    client?.Close();
-                    return;
-                }
-
-                using (Stream = client.GetStream())
-                {
-                    ConnectionManager.SetStream(Stream);
-                    ConnectionStatus = Status.Connected;
-
-                    UnityEngine.Debug.Log("Connection to LiveSplit was open!");
-
-                    cancelRefresh = new CancellationTokenSource();
-                    while (true)
+                    using (Stream = client.GetStream())
                     {
-                        try { await Task.Delay(TimeSpan.FromSeconds(RefreshRate), cancelRefresh.Token); } catch { break; }
-                        if (ConnectionStatus == Status.Disconnecting || !(await TryPingClientAsync(client)))
-                            break;
+                        ConnectionManager.SetStream(Stream);
+                        ConnectionStatus = Status.Connected;
+
+                        UnityEngine.Debug.Log("Connection to LiveSplit was open!");
+
+                        cancelRefresh = new CancellationTokenSource();
+                        while (true)
+                        {
+                            try { await Task.Delay(TimeSpan.FromSeconds(RefreshRate), cancelRefresh.Token); } catch { break; }
+                            if (ConnectionStatus != Status.Connected || !(await TryPingClientAsync(client)))
+                                break;
+                        }
                     }
                 }
             }
             ConnectionStatus = Status.Disconnected;
-            ConnectionManager.SetStream(null);
             UnityEngine.Debug.LogWarning("Connection to LiveSplit was closed.");
         }
 
