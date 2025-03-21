@@ -7,8 +7,6 @@ namespace SpeedrunUtilsV2
 {
     internal static class GameStatus
     {
-        internal static int SaveFileID = -1;
-
         private static Story.ObjectiveID _currentStoryObjective = Story.ObjectiveID.NONE;
         private static Story.ObjectiveID PreviousStoryObjective = Story.ObjectiveID.NONE;
 
@@ -49,7 +47,6 @@ namespace SpeedrunUtilsV2
             foreach (var split in Enum.GetValues(typeof(Splits)))
                 CurrentSplitStates.Add((Splits)split, false);
 
-            SaveFileID = saveSlotData.saveSlotId;
             ConnectionManager.StartingNewGame = true;
         }
 
@@ -57,7 +54,7 @@ namespace SpeedrunUtilsV2
         {
             SaveSlotData saveSlotData = Core.Instance?.SaveManager?.CurrentSaveSlot;
             Stage currentStage = Utility.GetCurrentStage();
-            if (saveSlotData != null && saveSlotData.saveSlotId == SaveFileID && currentStage != Stage.NONE)
+            if (saveSlotData != null && currentStage != Stage.NONE)
             {
                 CurrentStoryObjective = saveSlotData.CurrentStoryObjective;
                 CurrentStage = currentStage;
@@ -67,8 +64,7 @@ namespace SpeedrunUtilsV2
 
         internal static void UpdateObjective(ObjectiveID objectiveID)
         {
-            SaveSlotData saveSlotData = Core.Instance?.SaveManager?.CurrentSaveSlot;
-            if (saveSlotData != null && saveSlotData.saveSlotId == SaveFileID && objectiveID != Story.ObjectiveID.NONE)
+            if (objectiveID != Story.ObjectiveID.NONE)
             {
                 CurrentStoryObjective = objectiveID;
                 CheckSplitsForObjectiveChange(CurrentStoryObjective, PreviousStoryObjective);
@@ -77,9 +73,7 @@ namespace SpeedrunUtilsV2
 
         internal static void FinalBossDead()
         {
-            SaveSlotData saveSlotData = Core.Instance?.SaveManager?.CurrentSaveSlot;
-            if (saveSlotData != null && saveSlotData.saveSlotId == SaveFileID)
-                ShouldSplit(Splits.FinalBossDefeated);
+            ShouldSplit(Splits.FinalBossDefeated);
         }
 
         private static void CheckSplitsForStageChange(Stage currentStage, Stage previousStage)
