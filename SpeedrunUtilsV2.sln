@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35825.156
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedrunUtilsV2", "SpeedrunUtilsV2\SpeedrunUtilsV2.csproj", "{95A5680F-233B-41E1-9085-FB74F62592FA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{95A5680F-233B-41E1-9085-FB74F62592FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95A5680F-233B-41E1-9085-FB74F62592FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95A5680F-233B-41E1-9085-FB74F62592FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95A5680F-233B-41E1-9085-FB74F62592FA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B934AFA9-C425-4148-B00A-4C0772360356}
+	EndGlobalSection
+EndGlobal
