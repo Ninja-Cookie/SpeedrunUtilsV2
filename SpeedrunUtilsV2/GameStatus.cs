@@ -42,11 +42,7 @@ namespace SpeedrunUtilsV2
         internal static void SetupNewGame(SaveSlotData saveSlotData)
         {
             RefreshSplitsFile();
-
-            CurrentSplitStates.Clear();
-            foreach (var split in Enum.GetValues(typeof(Splits)))
-                CurrentSplitStates.Add((Splits)split, false);
-
+            SetDefaultSplitStates();
             ConnectionManager.StartingNewGame = true;
         }
 

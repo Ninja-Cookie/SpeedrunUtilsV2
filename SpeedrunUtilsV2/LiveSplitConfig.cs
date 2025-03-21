@@ -35,7 +35,7 @@ namespace SpeedrunUtilsV2
 
             { Splits.FinalBossDefeated, false   }
         };
-        internal readonly static Dictionary<Splits, bool> CurrentSplitStates    = new Dictionary<Splits, bool>();
+        internal readonly static Dictionary<Splits, bool> CurrentSplitStates = new Dictionary<Splits, bool>();
 
         internal enum Splits
         {
@@ -174,6 +174,14 @@ namespace SpeedrunUtilsV2
             CreateSplitsFile();
             CreateKeysFile();
             CreateSettingsFile();
+            SetDefaultSplitStates();
+        }
+
+        internal static void SetDefaultSplitStates()
+        {
+            CurrentSplitStates.Clear();
+            foreach (var split in Enum.GetValues(typeof(Splits)))
+                CurrentSplitStates.Add((Splits)split, false);
         }
 
         internal static void RefreshSplitsFile()
