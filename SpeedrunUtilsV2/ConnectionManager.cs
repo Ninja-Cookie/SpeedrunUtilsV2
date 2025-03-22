@@ -41,9 +41,12 @@ namespace SpeedrunUtilsV2
         {
             if (IsConnected)
             {
-                await Stream.WriteAsync(bytes, 0, bytes.Length);
-                await Stream.FlushAsync();
-                return true;
+                try
+                {
+                    await Stream.WriteAsync(bytes, 0, bytes.Length);
+                    await Stream.FlushAsync();
+                    return true;
+                } catch { return false; }
             }
             return false;
         }
@@ -52,8 +55,11 @@ namespace SpeedrunUtilsV2
         {
             if (IsConnected)
             {
-                var responseBuffer = new byte[BUFFER];
-                return (await Stream.ReadAsync(responseBuffer, 0, responseBuffer.Length), responseBuffer);
+                try
+                {
+                    var responseBuffer = new byte[BUFFER];
+                    return (await Stream.ReadAsync(responseBuffer, 0, responseBuffer.Length), responseBuffer);
+                } catch { return default; }
             }
             return default;
         }
@@ -137,6 +143,10 @@ namespace SpeedrunUtilsV2
             await SendDataToStream("split");
         }
 
+
+
+        // Debug -----------------------------------------------------------------------------------------------
+
         internal static async Task<TimeSpan> StartGettingGameTime()
         {
             if (IsConnected)
@@ -147,6 +157,9 @@ namespace SpeedrunUtilsV2
         private static async Task<TimeSpan> GetGameTime()
         {
             var gameTime = await SendAndReceiveResponse("getcurrentgametime");
+            if (gameTime == default)
+                return default;
+
             string response = Encoding.ASCII.GetString(gameTime.Item2, 0, gameTime.Item1).Trim();
             if (TimeSpan.TryParse(response, out TimeSpan currentGameTime))
                 return currentGameTime;
