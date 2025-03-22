@@ -149,6 +149,7 @@ namespace SpeedrunUtilsV2
         internal static (string, Vector2, Vector2)  SETTINGS_FPSPos         = ("FPS Screen Position",           new Vector2(8f, 4f), new Vector2(8f, 4f));
         internal static (string, bool, bool)        SETTINGS_UncapLoading   = ("Uncap FPS During Loading",      true, true);
         internal static (string, bool, bool)        SETTINGS_MouseFix       = ("Enable Fix to Menu Mouse",      true, true);
+        internal static (string, bool, bool)        SETTINGS_DebugMode      = ("Debug Mode",                    false, false);
 
         private const   string          EXTENSION           = ".cfg";
         private const   string          FOLDER_UtilsFolder  = "SpeedrunUtilsV2";
@@ -239,6 +240,7 @@ namespace SpeedrunUtilsV2
             BindSetting(ref SETTINGS_FPSPos);
             BindSetting(ref SETTINGS_UncapLoading);
             BindSetting(ref SETTINGS_MouseFix);
+            BindSetting(ref SETTINGS_DebugMode);
         }
 
         private static T BindSetting<T>(ref (string, T, T) setting)

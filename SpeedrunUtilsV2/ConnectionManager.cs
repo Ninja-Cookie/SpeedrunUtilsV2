@@ -136,5 +136,21 @@ namespace SpeedrunUtilsV2
         {
             await SendDataToStream("split");
         }
+
+        internal static async Task<TimeSpan> StartGettingGameTime()
+        {
+            if (IsConnected)
+                return await GetGameTime();
+            return default(TimeSpan);
+        }
+
+        private static async Task<TimeSpan> GetGameTime()
+        {
+            var gameTime = await SendAndReceiveResponse("getcurrentgametime");
+            string response = Encoding.ASCII.GetString(gameTime.Item2, 0, gameTime.Item1).Trim();
+            if (TimeSpan.TryParse(response, out TimeSpan currentGameTime))
+                return currentGameTime;
+            return default(TimeSpan);
+        }
     }
 }
