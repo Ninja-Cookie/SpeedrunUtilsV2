@@ -43,7 +43,8 @@ namespace SpeedrunUtilsV2
         {
             RefreshSplitsFile();
             SetDefaultSplitStates();
-            ConnectionManager.StartingNewGame = true;
+            if (ConnectionManager.IsConnected)
+                ConnectionManager.StartingNewGame = true;
         }
 
         internal static void UpdateStage()

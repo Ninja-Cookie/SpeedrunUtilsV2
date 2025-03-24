@@ -12,7 +12,7 @@ namespace SpeedrunUtilsV2
         private const string pluginName     = "SpeedrunUtilsV2";
         private const string pluginVersion  = "0.1.0";
 
-        private static readonly LiveSplitManager liveSplitManager = new LiveSplitManager();
+        internal static readonly LiveSplitManager liveSplitManager = new LiveSplitManager();
 
         public void Awake()
         {

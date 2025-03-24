@@ -12,13 +12,41 @@ namespace SpeedrunUtilsV2
         private const   string          TimeFormat  = @"hh\:mm\:ss\.fff";
 
         private static  NetworkStream   Stream;
-        internal static bool            IsConnected => Stream != null;
+        internal static bool            IsConnected => Stream != null && Plugin.liveSplitManager.ConnectionStatus == LiveSplitManager.Status.Connected;
+
+        private enum Commands
+        {
+            GetCurrentGameTime,
+            SetGameTime,
+            PauseGameTime,
+            UnpauseGameTime,
+            Reset,
+            StartTimer,
+            Split
+        }
 
         internal static bool StartingNewGame = false;
 
         internal static void SetStream(NetworkStream stream)
         {
             Stream = stream;
+        }
+
+        private static string GetCommand(Commands command, string parameter)
+        {
+            return parameter != null ? $"{command.ToString().ToLower()} {parameter}" : command.ToString().ToLower();
+        }
+
+        private static async Task<(int, byte[])> SendAndReceiveResponse(Commands command, string parameter = null)
+        {
+            string data = GetCommand(command, parameter);
+            return await SendAndReceiveResponse(data);
+        }
+
+        private static async Task<bool> SendWithNoResponse(Commands command, string parameter = null)
+        {
+            string data = GetCommand(command, parameter);
+            return await SendWithNoResponse(data);
         }
 
         private static async Task<(int, byte[])> SendAndReceiveResponse(string data)
@@ -31,7 +59,7 @@ namespace SpeedrunUtilsV2
             return response;
         }
 
-        private static async Task<bool> SendDataToStream(string data)
+        private static async Task<bool> SendWithNoResponse(string data)
         {
             byte[] commandBytes = Encoding.UTF8.GetBytes($"{data}\r\n");
             return await WriteToStream(commandBytes);
@@ -53,14 +81,14 @@ namespace SpeedrunUtilsV2
 
         private static async Task<(int, byte[])> ReadCurrentStream()
         {
-            if (IsConnected)
+            try
             {
-                try
+                if (IsConnected && Stream.DataAvailable)
                 {
                     var responseBuffer = new byte[BUFFER];
                     return (await Stream.ReadAsync(responseBuffer, 0, responseBuffer.Length), responseBuffer);
-                } catch { return default; }
-            }
+                }
+            } catch { return default; }
             return default;
         }
 
@@ -75,7 +103,7 @@ namespace SpeedrunUtilsV2
             Stopwatch responseTimer = new Stopwatch();
             responseTimer.Start();
 
-            var gameTimeResponse = await SendAndReceiveResponse("getcurrentgametime");
+            var gameTimeResponse = await SendAndReceiveResponse(Commands.GetCurrentGameTime);
 
             responseTimer.Stop();
 
@@ -86,7 +114,7 @@ namespace SpeedrunUtilsV2
             if (TimeSpan.TryParse(response, out TimeSpan currentGameTime))
             {
                 TimeSpan newTime = (currentGameTime + time) - TimeSpan.FromMilliseconds(responseTimer.ElapsedMilliseconds);
-                await SendDataToStream($"setgametime {newTime.ToString(TimeFormat)}");
+                await SendWithNoResponse(Commands.SetGameTime, newTime.ToString(TimeFormat));
             }
         }
 
@@ -98,26 +126,26 @@ namespace SpeedrunUtilsV2
 
         private static async Task PauseTimer()
         {
-            await SendDataToStream("pausegametime");
+            await SendWithNoResponse(Commands.PauseGameTime);
         }
 
         internal static async void StartUnpausingTimer()
         {
+            // Putting this here just ensures StartingNewGame will always be set to false again if a connection failed.
+            bool newGame    = StartingNewGame;
+            StartingNewGame = false;
+
             if (IsConnected)
             {
                 await UnpauseTimer();
-
-                if (StartingNewGame)
-                {
-                    StartingNewGame = false;
+                if (newGame)
                     await StartNewGame();
-                }
             }
         }
 
         private static async Task UnpauseTimer()
         {
-            await SendDataToStream("unpausegametime");
+            await SendWithNoResponse(Commands.UnpauseGameTime);
         }
 
         private static async Task StartNewGame()
@@ -128,19 +156,19 @@ namespace SpeedrunUtilsV2
 
         private static async Task NewGame()
         {
-            await SendDataToStream("reset");
-            await SendDataToStream("starttimer");
+            await SendWithNoResponse(Commands.Reset);
+            await SendWithNoResponse(Commands.StartTimer);
         }
 
         internal static async void StartSplit(LiveSplitConfig.Splits split)
         {
             if (IsConnected)
-                await Split(split);
+                await Split();
         }
 
-        private static async Task Split(LiveSplitConfig.Splits split)
+        private static async Task Split()
         {
-            await SendDataToStream("split");
+            await SendWithNoResponse(Commands.Split);
         }
 
 
@@ -150,13 +178,13 @@ namespace SpeedrunUtilsV2
         internal static async Task<TimeSpan> StartGettingGameTime()
         {
             if (IsConnected)
-                return await GetGameTime();
+                return await GetGameTimeFull();
             return default(TimeSpan);
         }
 
-        private static async Task<TimeSpan> GetGameTime()
+        private static async Task<TimeSpan> GetGameTimeFull()
         {
-            var gameTime = await SendAndReceiveResponse("getcurrentgametime");
+            var gameTime = await SendAndReceiveResponse(Commands.GetCurrentGameTime);
             if (gameTime == default)
                 return default;
 
