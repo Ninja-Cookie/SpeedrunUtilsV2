@@ -12,6 +12,7 @@ namespace SpeedrunUtilsV2.Patches
         internal delegate void SkippedCutscene(TimeSpan time);
         internal static SkippedCutscene OnSkippedCutscene;
 
+        // These are times starting from fully entering a sequence, to when ExitCurrentSequence() would be fired (by UpdateSequenceHandler() in SequenceHandler)
         private const string Format = @"m\:ss\.fff";
         private static readonly Dictionary<(string, int), TimeSpan> CutsceneIDs = new Dictionary<(string, int), TimeSpan>()
         {
