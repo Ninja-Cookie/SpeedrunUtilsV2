@@ -9,7 +9,7 @@ namespace SpeedrunUtilsV2
     internal static class ConnectionManager
     {
         private const   int             BUFFER      = 1024;
-        private const   string          TimeFormat  = @"hh\:mm\:ss\.fff";
+        private const   string          TimeFormat  = @"hh\:mm\:ss\.fffffff";
 
         private static  NetworkStream   Stream;
         internal static bool            IsConnected => Stream != null && Plugin.liveSplitManager.ConnectionStatus == LiveSplitManager.Status.Connected;
@@ -100,11 +100,8 @@ namespace SpeedrunUtilsV2
 
         private static async Task AddCutsceneTime(TimeSpan time)
         {
-            Stopwatch responseTimer = new Stopwatch();
-            responseTimer.Start();
-
+            Stopwatch responseTimer = Stopwatch.StartNew();
             var gameTimeResponse = await SendAndReceiveResponse(Commands.GetCurrentGameTime);
-
             responseTimer.Stop();
 
             if (gameTimeResponse == default)
@@ -113,7 +110,7 @@ namespace SpeedrunUtilsV2
             string response = Encoding.ASCII.GetString(gameTimeResponse.Item2, 0, gameTimeResponse.Item1).Trim();
             if (TimeSpan.TryParse(response, out TimeSpan currentGameTime))
             {
-                TimeSpan newTime = (currentGameTime + time) - TimeSpan.FromMilliseconds(responseTimer.ElapsedMilliseconds);
+                TimeSpan newTime = (currentGameTime + time) - responseTimer.Elapsed;
                 await SendWithNoResponse(Commands.SetGameTime, newTime.ToString(TimeFormat));
             }
         }

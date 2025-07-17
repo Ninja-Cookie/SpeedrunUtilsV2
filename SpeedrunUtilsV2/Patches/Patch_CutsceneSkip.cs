@@ -15,16 +15,16 @@ namespace SpeedrunUtilsV2.Patches
         private const string Format = @"m\:ss\.fff";
         private static readonly Dictionary<(string, int), TimeSpan> CutsceneIDs = new Dictionary<(string, int), TimeSpan>()
         {
-            { ("ch1s4",                 631),   TimeSpan.ParseExact("1:09.737", Format, null) },
-            { ("ch1s5b",                270),   TimeSpan.ParseExact("1:35.315", Format, null) },
-            { ("ch1s5c",                290),   TimeSpan.ParseExact("0:40.687", Format, null) },
-            { ("ch1s7",                 171),   TimeSpan.ParseExact("0:28.243", Format, null) },
-            { ("ch1s10",                894),   TimeSpan.ParseExact("1:26.239", Format, null) },
-            { ("ch1s12",                224),   TimeSpan.ParseExact("0:36.994", Format, null) },
-            { ("ch2s1",                 416),   TimeSpan.ParseExact("1:41.264", Format, null) },
-            { ("Sequence_LeaveSquare",  11),    TimeSpan.ParseExact("0:08.957", Format, null) },
-            { ("Sequence_Talk_1",       71),    TimeSpan.ParseExact("0:06.462", Format, null) },
-            { ("ch3s1",                 216),   TimeSpan.ParseExact("0:56.397", Format, null) }
+            { ("ch1s4",                 631),   TimeSpan.ParseExact("1:09.714", Format, null) },    // Prologue Ending
+            { ("ch1s5b",                270),   TimeSpan.ParseExact("1:35.298", Format, null) },    // Chapter 1 Hideout Intro
+            { ("ch1s5c",                290),   TimeSpan.ParseExact("0:40.713", Format, null) },    // Chapter 1 Hideout Exit
+            { ("ch1s7",                 171),   TimeSpan.ParseExact("0:28.212", Format, null) },    // Versum Frank Spray
+            { ("ch1s10",                894),   TimeSpan.ParseExact("1:25.915", Format, null) },    // Versum Dream Intro
+            { ("ch1s12",                224),   TimeSpan.ParseExact("0:36.930", Format, null) },    // Versum Dream Outro
+            { ("ch2s1",                 416),   TimeSpan.ParseExact("1:41.202", Format, null) },    // Chapter 2 Hideout Intro
+            { ("Sequence_LeaveSquare",  11),    TimeSpan.ParseExact("0:08.913", Format, null) },    // Square Talk 1
+            { ("Sequence_Talk_1",       71),    TimeSpan.ParseExact("0:06.412", Format, null) },    // Square Talk 2
+            { ("ch3s1",                 216),   TimeSpan.ParseExact("0:56.348", Format, null) }     // Chapter 3 Hideout Intro
         };
 
         [HarmonyPatch(typeof(SequenceHandler), "EnterSequenceRoutine", MethodType.Enumerator)]
@@ -72,11 +72,15 @@ namespace SpeedrunUtilsV2.Patches
 
         // Debug -----------------------------------------------------------------------------------------------
 
+        private static CutsceneTimer cutsceneTimer;
+
         internal static void DebugRunTimer(PlayableDirector sequence)
         {
-            UnityEngine.Debug.Log($"Starting Timer ...");
-            UnityEngine.Debug.Log($"{sequence.name} | {sequence.playableGraph.GetPlayableCount()}");
-            CutsceneTimer.StartTimer();
+            if (cutsceneTimer != null)
+                return;
+
+            cutsceneTimer = new CutsceneTimer();
+            cutsceneTimer.StartTimer(sequence.name, sequence.playableGraph.GetPlayableCount());
         }
 
         [HarmonyPatch(typeof(SequenceHandler), "UpdateSequenceHandler", MethodType.Normal)]
@@ -88,7 +92,8 @@ namespace SpeedrunUtilsV2.Patches
                 {
                     if (___exitSequenceRoutine == null && !___disabledExit && (___sequence.time >= ___sequence.duration - (double)___fadeDuration || ___skipTimer >= ___skipThreshold))
                     {
-                        CutsceneTimer.StopTimer();
+                        cutsceneTimer.StopTimer();
+                        cutsceneTimer = null;
                         return;
                     }
                 }
