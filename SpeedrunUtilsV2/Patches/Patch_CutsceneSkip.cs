@@ -25,7 +25,8 @@ namespace SpeedrunUtilsV2.Patches
             { ("ch2s1",                 416),   TimeSpan.ParseExact("1:41.202", Format, null) },    // Chapter 2 Hideout Intro
             { ("Sequence_LeaveSquare",  11),    TimeSpan.ParseExact("0:08.913", Format, null) },    // Square Talk 1
             { ("Sequence_Talk_1",       71),    TimeSpan.ParseExact("0:06.412", Format, null) },    // Square Talk 2
-            { ("ch3s1",                 216),   TimeSpan.ParseExact("0:56.348", Format, null) }     // Chapter 3 Hideout Intro
+            { ("ch3s1",                 216),   TimeSpan.ParseExact("0:56.348", Format, null) },    // Chapter 3 Hideout Intro
+            { ("sequenceSHOWUP",        92),    TimeSpan.ParseExact("0:11.363", Format, null) }     // Chapter 4 Pre-Crew Battle
         };
 
         [HarmonyPatch(typeof(SequenceHandler), "EnterSequenceRoutine", MethodType.Enumerator)]

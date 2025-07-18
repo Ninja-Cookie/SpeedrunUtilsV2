@@ -89,12 +89,12 @@ namespace SpeedrunUtilsV2
                     using (Stream = client.GetStream())
                     {
                         ConnectionManager.SetStream(Stream);
+                        cancelRefresh = new CancellationTokenSource();
                         ConnectionStatus = Status.Connected;
 
                         UnityEngine.Debug.Log("Connection to LiveSplit was open!");
 
-                        cancelRefresh = new CancellationTokenSource();
-                        while (true)
+                        while (ConnectionStatus == Status.Connected)
                         {
                             try { await Task.Delay(TimeSpan.FromSeconds(RefreshRate), cancelRefresh.Token); } catch { break; }
                             if (ConnectionStatus != Status.Connected || !(await TryPingClientAsync(client)))
@@ -112,7 +112,7 @@ namespace SpeedrunUtilsV2
             if (ConnectionStatus == Status.Connected)
             {
                 ConnectionStatus = Status.Disconnecting;
-                cancelRefresh.Cancel();
+                cancelRefresh?.Cancel();
             }
         }
 
