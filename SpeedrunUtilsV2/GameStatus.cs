@@ -141,8 +141,11 @@ namespace SpeedrunUtilsV2
             }
         }
 
-        private static void ShouldSplit(Splits split)
+        internal static void ShouldSplit(Splits split)
         {
+            if (!ConnectionManager.IsConnected)
+                return;
+
             RefreshSplitsFile();
 
             if (CurrentSplits.TryGetValue(split, out var canSplit) && canSplit.Item1 && CurrentSplitStates.TryGetValue(split, out var hasBeenSplit) && !hasBeenSplit)

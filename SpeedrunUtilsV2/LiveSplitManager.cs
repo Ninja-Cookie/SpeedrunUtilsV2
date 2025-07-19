@@ -39,7 +39,6 @@ namespace SpeedrunUtilsV2
                             Patches.Patch_Loading       .OnExitedLoading    += ConnectionManager.StartUnpausingTimer;
                             StageManager                .OnStageInitialized += GameStatus.UpdateStage;
                             Patches.Patch_Objective     .OnObjectiveChanged += GameStatus.UpdateObjective;
-                            Patches.Patch_FinalBoss     .OnFinalBossDead    += GameStatus.FinalBossDead;
                         break;
 
                         case Status.Disconnected:
@@ -48,7 +47,6 @@ namespace SpeedrunUtilsV2
                             Patches.Patch_Loading       .OnExitedLoading    -= ConnectionManager.StartUnpausingTimer;
                             StageManager                .OnStageInitialized -= GameStatus.UpdateStage;
                             Patches.Patch_Objective     .OnObjectiveChanged -= GameStatus.UpdateObjective;
-                            Patches.Patch_FinalBoss     .OnFinalBossDead    -= GameStatus.FinalBossDead;
                         break;
 
                         case Status.Disconnecting:

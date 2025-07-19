@@ -39,6 +39,7 @@
     <Compile Include="Patches\Patch_CutsceneSkip.cs" />
     <Compile Include="EasyReflection.cs" />
     <Compile Include="Patches\Patch_CutsceneMash.cs" />
+    <Compile Include="Patches\Patch_OldHead.cs" />
     <Compile Include="Patches\Patch_FinalBoss.cs" />
     <Compile Include="Patches\Patch_MenuMouseFix.cs" />
     <Compile Include="Patches\Patch_NewGame.cs" />
