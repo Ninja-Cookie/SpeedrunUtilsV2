@@ -1,8 +1,14 @@
-﻿using System.Text.RegularExpressions;
-using static SpeedrunUtilsV2.UI.UtilsUI;
-using UnityEngine;
+﻿using Reptile;
+using Reptile.Phone;
 using System;
-using Reptile;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Text.RegularExpressions;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using static SpeedrunUtilsV2.UI.UtilsUI;
 
 namespace SpeedrunUtilsV2
 {
@@ -181,8 +187,8 @@ namespace SpeedrunUtilsV2
 
         internal static void UpdateSplitGUI(LiveSplitConfig.Splits split)
         {
-            bool value = GUIToggle(LiveSplitConfig.CurrentSplits[split], LiveSplitConfig.SplitDescriptions[split], windowPropertiesSplits);
-            if (LiveSplitConfig.CurrentSplits.TryGetValue(split, out bool currentValue) && value != currentValue)
+            bool value = GUIToggle(LiveSplitConfig.CurrentSplits[split].Item1, LiveSplitConfig.CurrentSplits[split].Item3, windowPropertiesSplits);
+            if (LiveSplitConfig.CurrentSplits.TryGetValue(split, out var currentValue) && value != currentValue.Item1)
                 LiveSplitConfig.UpdateSplitsFile(split, value);
         }
     }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
@@ -9,31 +10,33 @@ namespace SpeedrunUtilsV2
 {
     internal static class LiveSplitConfig
     {
-        internal readonly static Dictionary<Splits, bool> CurrentSplits = new Dictionary<Splits, bool>()
+        internal readonly static Dictionary<Splits, (bool, bool, string)> CurrentSplits = new Dictionary<Splits, (bool, bool, string)>()
         {
-            { Splits.PrologueEnd,       false   },
-            { Splits.EarlySquare,       false   },
-            { Splits.VersumStart,       false   },
-            { Splits.Dream1Start,       false   },
-            { Splits.Chapter1End,       false   },
+            { Splits.PrologueEnd,       (false, true,   "Prologue Ended")                       },
+            { Splits.EarlySquare,       (false, true,   "Entered Square Early")                 },
+            { Splits.VersumStart,       (false, true,   "Entered Versum")                       },
+            { Splits.Dream1Start,       (false, true,   "Dream 1 Started")                      },
+            { Splits.Chapter1End,       (false, true,   "Chapter 1 Ended")                      },
 
-            { Splits.BrinkStart,        false   },
-            { Splits.Dream2Start,       false   },
-            { Splits.Chapter2End,       false   },
+            { Splits.BrinkStart,        (false, true,   "Entered Brink")                        },
+            { Splits.Dream2Start,       (false, true,   "Dream 2 Started")                      },
+            { Splits.Chapter2End,       (false, true,   "Chapter 2 Ended")                      },
 
-            { Splits.MallStart,         false   },
-            { Splits.Dream3Start,       false   },
-            { Splits.Chapter3End,       false   },
+            { Splits.MallStart,         (false, true,   "Entered Mall")                         },
+            { Splits.Dream3Start,       (false, true,   "Dream 3 Started")                      },
+            { Splits.Chapter3End,       (false, true,   "Chapter 3 Ended")                      },
 
-            { Splits.PrinceVersumEnd,   false   },
-            { Splits.PrinceSquareEnd,   false   },
-            { Splits.PrinceBrinkEnd,    false   },
+            { Splits.PrinceVersumEnd,   (false, false,  "Talked To Frank in Versum")            },
+            { Splits.PrinceSquareEnd,   (false, false,  "Beat the Frank Challenge in Square")   },
+            { Splits.PrinceBrinkEnd,    (false, false,  "Talked To Frank in Brink")             },
 
-            { Splits.PyramidStart,      false   },
-            { Splits.Dream4Start,       false   },
-            { Splits.Chapter4End,       false   },
+            { Splits.PyramidStart,      (false, true,   "Entered Pyramid Island")               },
+            { Splits.Dream4Start,       (false, true,   "Dream 4 Started")                      },
+            { Splits.Chapter4End,       (false, true,   "Chapter 4 Ended")                      },
 
-            { Splits.FinalBossDefeated, false   }
+            { Splits.Dream5Start,       (false, false,  "Dream 5 Started")                      },
+
+            { Splits.FinalBossDefeated, (false, true,   "Defeated Final Boss")                  }
         };
         internal readonly static Dictionary<Splits, bool> CurrentSplitStates = new Dictionary<Splits, bool>();
 
@@ -61,62 +64,10 @@ namespace SpeedrunUtilsV2
             Dream4Start,
             Chapter4End,
 
+            Dream5Start,
+
             FinalBossDefeated
         }
-
-        internal static readonly Dictionary<Splits, string> SplitDescriptions = new Dictionary<Splits, string>()
-        {
-            {Splits.PrologueEnd,        "Prologue Ended"                        },
-            {Splits.EarlySquare,        "Entered Square Early"                  },
-            {Splits.VersumStart,        "Entered Versum"                        },
-            {Splits.Dream1Start,        "Dream 1 Started"                       },
-            {Splits.Chapter1End,        "Chapter 1 Ended"                       },
-
-            {Splits.BrinkStart,         "Entered Brink"                         },
-            {Splits.Dream2Start,        "Dream 2 Started"                       },
-            {Splits.Chapter2End,        "Chapter 2 Ended"                       },
-
-            {Splits.MallStart,          "Entered Mall"                          },
-            {Splits.Dream3Start,        "Dream 3 Started"                       },
-            {Splits.Chapter3End,        "Chapter 3 Ended"                       },
-
-            {Splits.PrinceVersumEnd,    "Talked To Frank in Versum"             },
-            {Splits.PrinceSquareEnd,    "Beat the Frank Challenge in Square"    },
-            {Splits.PrinceBrinkEnd,     "Talked To Frank in Brink"              },
-
-            {Splits.PyramidStart,       "Entered Pyramid Island"                },
-            {Splits.Dream4Start,        "Dream 4 Started"                       },
-            {Splits.Chapter4End,        "Chapter 4 Ended"                       },
-
-            {Splits.FinalBossDefeated,  "Defeated Final Boss"                   }
-        };
-
-        private static readonly Dictionary<Splits, bool> SplitDefault = new Dictionary<Splits, bool>()
-        {
-            {Splits.PrologueEnd,        true    },
-            {Splits.EarlySquare,        true    },
-            {Splits.VersumStart,        true    },
-            {Splits.Dream1Start,        true    },
-            {Splits.Chapter1End,        true    },
-
-            {Splits.BrinkStart,         true    },
-            {Splits.Dream2Start,        true    },
-            {Splits.Chapter2End,        true    },
-
-            {Splits.MallStart,          true    },
-            {Splits.Dream3Start,        true    },
-            {Splits.Chapter3End,        true    },
-
-            {Splits.PrinceVersumEnd,    false   },
-            {Splits.PrinceSquareEnd,    false   },
-            {Splits.PrinceBrinkEnd,     false   },
-
-            {Splits.PyramidStart,       true    },
-            {Splits.Dream4Start,        true    },
-            {Splits.Chapter4End,        true    },
-
-            {Splits.FinalBossDefeated,  true    }
-        };
 
         internal enum Actions
         {
@@ -192,23 +143,24 @@ namespace SpeedrunUtilsV2
 
         internal static void UpdateSplitsFile(Splits split, bool value)
         {
-            if (CurrentSplits.ContainsKey(split) && SplitDescriptions.TryGetValue(split, out var key))
+            if (CurrentSplits.ContainsKey(split))
             {
-                CurrentSplits[split] = value;
-                if (CONFIG_Splits.TryGetEntry(SECTION_Splits, key, out ConfigEntry<bool> entry))
+                CurrentSplits[split] = (value, CurrentSplits[split].Item2, CurrentSplits[split].Item3);
+                if (CONFIG_Splits.TryGetEntry(SECTION_Splits, CurrentSplits[split].Item3, out ConfigEntry<bool> entry))
                     entry.Value = value;
             }
         }
 
         private static void CreateSplitsFile()
         {
-            foreach (var split in SplitDescriptions)
+            for (int i = 0; i < CurrentSplits.Count; i++)
             {
-                if (SplitDefault.TryGetValue(split.Key, out var defaultValue))
+                var key = CurrentSplits.ElementAt(i).Key;
+                if (CurrentSplits.TryGetValue(key, out var value))
                 {
-                    CONFIG_Splits.Bind(SECTION_Splits, split.Value, defaultValue);
-                    if (CONFIG_Splits.TryGetEntry(SECTION_Splits, split.Value, out ConfigEntry<bool> entry))
-                        CurrentSplits[split.Key] = entry.Value;
+                    CONFIG_Splits.Bind(SECTION_Splits, value.Item3, value.Item2);
+                    if (CONFIG_Splits.TryGetEntry(SECTION_Splits, value.Item3, out ConfigEntry<bool> entry))
+                        CurrentSplits[key] = (entry.Value, value.Item2, value.Item3);
                 }
             }
         }

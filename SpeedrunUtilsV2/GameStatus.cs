@@ -122,6 +122,7 @@ namespace SpeedrunUtilsV2
                 case ObjectiveID.DJChallenge2: ShouldSplit(Splits.Dream2Start); break;
                 case ObjectiveID.DJChallenge3: ShouldSplit(Splits.Dream3Start); break;
                 case ObjectiveID.DJChallenge4: ShouldSplit(Splits.Dream4Start); break;
+                case ObjectiveID.DJChallenge5: ShouldSplit(Splits.Dream5Start); break;
 
                 case ObjectiveID.SearchForPrince2:
                     if (previousObjective == ObjectiveID.SearchForPrince)
@@ -144,7 +145,7 @@ namespace SpeedrunUtilsV2
         {
             RefreshSplitsFile();
 
-            if (CurrentSplits.TryGetValue(split, out var canSplit) && canSplit && CurrentSplitStates.TryGetValue(split, out var hasBeenSplit) && !hasBeenSplit)
+            if (CurrentSplits.TryGetValue(split, out var canSplit) && canSplit.Item1 && CurrentSplitStates.TryGetValue(split, out var hasBeenSplit) && !hasBeenSplit)
             {
                 CurrentSplitStates[split] = true;
                 ConnectionManager.StartSplit(split);

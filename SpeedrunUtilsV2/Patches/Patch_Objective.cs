@@ -14,7 +14,9 @@ namespace SpeedrunUtilsV2.Patches
             internal static void Prefix(Story.ObjectiveID ___currentStoryObjective, Story.ObjectiveID value)
             {
                 if (LiveSplitConfig.SETTINGS_DebugMode.Item2)
-                    UnityEngine.Debug.LogError($"Setting Objective To: {value}");
+                {
+                    UnityEngine.Debug.LogError($"Setting Objective To: \"{value}\" from \"{___currentStoryObjective}\"");
+                }
 
                 if (value != ___currentStoryObjective)
                     OnObjectiveChanged?.Invoke(value);
