@@ -141,14 +141,14 @@ namespace SpeedrunUtilsV2
             }
         }
 
-        internal static void ShouldSplit(Splits split)
+        internal static void ShouldSplit(Splits split, bool ignoreHasBeenSplit = false)
         {
             if (!ConnectionManager.IsConnected)
                 return;
 
             RefreshSplitsFile();
 
-            if (CurrentSplits.TryGetValue(split, out var canSplit) && canSplit.Item1 && CurrentSplitStates.TryGetValue(split, out var hasBeenSplit) && !hasBeenSplit)
+            if (CurrentSplits.TryGetValue(split, out var canSplit) && canSplit.Item1 && (ignoreHasBeenSplit || (CurrentSplitStates.TryGetValue(split, out var hasBeenSplit) && !hasBeenSplit)))
             {
                 CurrentSplitStates[split] = true;
                 ConnectionManager.StartSplit(split);

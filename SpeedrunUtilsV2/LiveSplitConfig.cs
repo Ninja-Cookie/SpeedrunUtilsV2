@@ -37,6 +37,7 @@ namespace SpeedrunUtilsV2
             { Splits.Dream5Start,       (false, false,  "Dream 5 Started")                      },
 
             { Splits.UnlockOldHead,     (false, false,  "Unlocked Old Head")                    },
+            { Splits.CharacterUnlock,   (false, false,  "Any Character Unlocked Manually")      },
             { Splits.FinalBossDefeated, (false, true,   "Defeated Final Boss")                  }
         };
         internal readonly static Dictionary<Splits, bool> CurrentSplitStates = new Dictionary<Splits, bool>();
@@ -67,6 +68,7 @@ namespace SpeedrunUtilsV2
 
             Dream5Start,
             UnlockOldHead,
+            CharacterUnlock,
 
             FinalBossDefeated
         }
