@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using static SpeedrunUtilsV2.Localization.Splits;
 
 namespace SpeedrunUtilsV2
 {
@@ -12,33 +13,33 @@ namespace SpeedrunUtilsV2
     {
         internal readonly static Dictionary<Splits, (bool, bool, string)> CurrentSplits = new Dictionary<Splits, (bool, bool, string)>()
         {
-            { Splits.PrologueEnd,       (false, true,   "Prologue Ended")                       },
-            { Splits.EarlySquare,       (false, true,   "Entered Square Early")                 },
-            { Splits.VersumStart,       (false, true,   "Entered Versum")                       },
-            { Splits.Dream1Start,       (false, true,   "Dream 1 Started")                      },
-            { Splits.Chapter1End,       (false, true,   "Chapter 1 Ended")                      },
+            { Splits.PrologueEnd,       (false, true,   $"{s_PrologueEnd}")         },
+            { Splits.EarlySquare,       (false, true,   $"{s_EarlySquare}")         },
+            { Splits.VersumStart,       (false, true,   $"{s_VersumStart}")         },
+            { Splits.Dream1Start,       (false, true,   $"{s_Dream1Start}")         },
+            { Splits.Chapter1End,       (false, true,   $"{s_Chapter1End}")         },
 
-            { Splits.BrinkStart,        (false, true,   "Entered Brink")                        },
-            { Splits.Dream2Start,       (false, true,   "Dream 2 Started")                      },
-            { Splits.Chapter2End,       (false, true,   "Chapter 2 Ended")                      },
+            { Splits.BrinkStart,        (false, true,   $"{s_BrinkStart}")          },
+            { Splits.Dream2Start,       (false, true,   $"{s_Dream2Start}")         },
+            { Splits.Chapter2End,       (false, true,   $"{s_Chapter2End}")         },
 
-            { Splits.MallStart,         (false, true,   "Entered Mall")                         },
-            { Splits.Dream3Start,       (false, true,   "Dream 3 Started")                      },
-            { Splits.Chapter3End,       (false, true,   "Chapter 3 Ended")                      },
+            { Splits.MallStart,         (false, true,   $"{s_MallStart}")           },
+            { Splits.Dream3Start,       (false, true,   $"{s_Dream3Start}")         },
+            { Splits.Chapter3End,       (false, true,   $"{s_Chapter3End}")         },
 
-            { Splits.PrinceVersumEnd,   (false, false,  "Talked To Frank in Versum")            },
-            { Splits.PrinceSquareEnd,   (false, false,  "Beat the Frank Challenge in Square")   },
-            { Splits.PrinceBrinkEnd,    (false, false,  "Talked To Frank in Brink")             },
+            { Splits.PrinceVersumEnd,   (false, false,  $"{s_PrinceVersumEnd}")     },
+            { Splits.PrinceSquareEnd,   (false, false,  $"{s_PrinceSquareEnd}")     },
+            { Splits.PrinceBrinkEnd,    (false, false,  $"{s_PrinceBrinkEnd}")      },
 
-            { Splits.PyramidStart,      (false, true,   "Entered Pyramid Island")               },
-            { Splits.Dream4Start,       (false, true,   "Dream 4 Started")                      },
-            { Splits.Chapter4End,       (false, true,   "Chapter 4 Ended")                      },
+            { Splits.PyramidStart,      (false, true,   $"{s_PyramidStart}")        },
+            { Splits.Dream4Start,       (false, true,   $"{s_Dream4Start}")         },
+            { Splits.Chapter4End,       (false, true,   $"{s_Chapter4End}")         },
 
-            { Splits.Dream5Start,       (false, false,  "Dream 5 Started")                      },
+            { Splits.Dream5Start,       (false, false,  $"{s_Dream5Start}")         },
 
-            { Splits.UnlockOldHead,     (false, false,  "Unlocked Old Head")                    },
-            { Splits.CharacterUnlock,   (false, false,  "Any Character Unlocked Manually")      },
-            { Splits.FinalBossDefeated, (false, true,   "Defeated Final Boss")                  }
+            { Splits.UnlockOldHead,     (false, false,  $"{s_UnlockOldHead}")       },
+            { Splits.CharacterUnlock,   (false, false,  $"{s_CharacterUnlock}")     },
+            { Splits.FinalBossDefeated, (false, true,   $"{s_FinalBossDefeated}")   }
         };
         internal readonly static Dictionary<Splits, bool> CurrentSplitStates = new Dictionary<Splits, bool>();
 

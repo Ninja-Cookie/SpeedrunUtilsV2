@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using static SpeedrunUtilsV2.UI.UtilsUI;
-using static SpeedrunUtilsV2.UI.UtilsUIText;
+using static SpeedrunUtilsV2.Localization.UI;
 
 namespace SpeedrunUtilsV2
 {
