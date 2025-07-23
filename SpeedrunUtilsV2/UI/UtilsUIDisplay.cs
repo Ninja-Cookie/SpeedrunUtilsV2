@@ -14,7 +14,7 @@ namespace SpeedrunUtilsV2
             if (LiveSplitConfig.ActionKeys.TryGetValue(LiveSplitConfig.Actions.UncapFPS, out var action_uncap) && LiveSplitConfig.ActionKeys.TryGetValue(LiveSplitConfig.Actions.LimitFPS, out var action_fps))
                 GUILabel($"Uncap Framerate: <color=orange>{action_uncap}</color> | Limit Framerate to {LiveSplitConfig.SETTINGS_LimitValue.Item2}: <color=orange>{action_fps}</color>", windowPropertiesMain, true);
 
-            GUILabel(ConnectionManager.IsConnected ? "<color=lime>Connected to LiveSplit!</color>" : "<color=red>Disconnected from LiveSplit.</color>", windowPropertiesMain);
+            GUILabel(ConnectionManager.IsConnected ? "<color=lime>Connected to LiveSplit!</color>" : "<color=red>Disconnected from LiveSplit</color>", windowPropertiesMain);
 
             if (GUIButton(ConnectionManager.IsConnected ? "Disconnect from LiveSplit" : "Connect to LiveSplit", ConnectionManager.IsConnected ? Setup.ButtonType.On : Setup.ButtonType.Off, windowPropertiesMain))
                 ToggleLiveSplit();

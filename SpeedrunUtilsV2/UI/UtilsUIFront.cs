@@ -1,20 +1,28 @@
 ﻿using Reptile;
-using Reptile.Phone;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Text.RegularExpressions;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using static SpeedrunUtilsV2.UI.UtilsUI;
 
 namespace SpeedrunUtilsV2
 {
     internal partial class Plugin
     {
-        private bool        GUI_ENABLED         = false;
+        private bool _GUI_ENABLED        = false;
+        private bool GUI_ENABLED
+        {
+            get => _GUI_ENABLED;
+            set
+            {
+                _GUI_ENABLED = value;
+                if (!GUI_ENABLED)
+                {
+                    GUI_SPLITS_ENABLED  = false;
+                    GUI_CREDITS_ENABLED = false;
+                }
+            }
+        }
+
+
         private static bool GUI_SPLITS_ENABLED  = false;
         private static bool GUI_CREDITS_ENABLED = false;
 
@@ -56,25 +64,21 @@ namespace SpeedrunUtilsV2
 
         public void Update()
         {
-            if (LiveSplitConfig.ActionKeys.TryGetValue(LiveSplitConfig.Actions.UncapFPS, out var action_uncap) && UnityEngine.Input.GetKeyDown(action_uncap))
+            if (GetActionKeyDown(LiveSplitConfig.Actions.UncapFPS))
                 LiveSplitConfig.SETTINGS_Uncap.Item2 = !LiveSplitConfig.SETTINGS_Uncap.Item2;
 
-            if (LiveSplitConfig.ActionKeys.TryGetValue(LiveSplitConfig.Actions.LimitFPS, out var action_fps) && UnityEngine.Input.GetKeyDown(action_fps))
+            if (GetActionKeyDown(LiveSplitConfig.Actions.LimitFPS))
                 FPS_Limited = !FPS_Limited;
 
             UpdateFPS();
 
-            if (LiveSplitConfig.ActionKeys.TryGetValue(LiveSplitConfig.Actions.OpenGUI, out var action_gui) && UnityEngine.Input.GetKeyDown(action_gui))
-            {
-                if (windowPropertiesMain != null)
-                    GUI_ENABLED = !GUI_ENABLED;
+            if (GetActionKeyDown(LiveSplitConfig.Actions.OpenGUI) && windowPropertiesMain != null)
+                GUI_ENABLED = !GUI_ENABLED;
+        }
 
-                if (!GUI_ENABLED)
-                {
-                    GUI_SPLITS_ENABLED  = false;
-                    GUI_CREDITS_ENABLED = false;
-                }
-            }
+        private bool GetActionKeyDown(LiveSplitConfig.Actions action)
+        {
+            return LiveSplitConfig.ActionKeys.TryGetValue(action, out var actionKeyCode) && UnityEngine.Input.GetKeyDown(actionKeyCode);
         }
 
         private void UpdateFPS()
