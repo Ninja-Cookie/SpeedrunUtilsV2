@@ -49,7 +49,7 @@
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\UtilsUIDisplay.cs" />
-    <Compile Include="UI\UtilsUIFront.cs" />
+    <Compile Include="UI\UtilsUIFunctions.cs" />
     <Compile Include="Localization.cs" />
   </ItemGroup>
   <ItemGroup>
