@@ -143,6 +143,9 @@ namespace SpeedrunUtilsV2
 
         internal static void ShouldSplit(Splits split, bool ignoreHasBeenSplit = false)
         {
+            if (SETTINGS_DebugMode.Item2)
+                UnityEngine.Debug.LogWarning($"Trying to split: {split}");
+
             if (!ConnectionManager.IsConnected)
                 return;
 

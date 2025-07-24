@@ -44,5 +44,10 @@ namespace SpeedrunUtilsV2
             internal static string s_CharacterUnlock    = "Any Character Unlocked Manually";
             internal static string s_FinalBossDefeated  = "Defeated Final Boss";
         }
+
+        internal static class Descriptions
+        {
+            internal static string s_mouseFix           = "Makes it so the mouse does not take priority of selected items if currently using a controller";
+        }
     }
 }

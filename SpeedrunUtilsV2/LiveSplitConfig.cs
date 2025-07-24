@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using static SpeedrunUtilsV2.Localization.Splits;
+using static SpeedrunUtilsV2.Localization.Descriptions;
 
 namespace SpeedrunUtilsV2
 {
@@ -196,13 +197,17 @@ namespace SpeedrunUtilsV2
             BindSetting(ref SETTINGS_FPSSize);
             BindSetting(ref SETTINGS_FPSPos);
             BindSetting(ref SETTINGS_UncapLoading);
-            BindSetting(ref SETTINGS_MouseFix);
+            BindSetting(ref SETTINGS_MouseFix, $"{s_mouseFix}");
             BindSetting(ref SETTINGS_DebugMode);
         }
 
-        private static T BindSetting<T>(ref (string, T, T) setting)
+        private static T BindSetting<T>(ref (string, T, T) setting, string description = null)
         {
-            CONFIG_Settings.Bind(SECTION_Settings, setting.Item1, setting.Item3);
+            if (description != null)
+                CONFIG_Settings.Bind(SECTION_Settings, setting.Item1, setting.Item3, description);
+            else
+                CONFIG_Settings.Bind(SECTION_Settings, setting.Item1, setting.Item3);
+
             if (CONFIG_Settings.TryGetEntry(SECTION_Settings, setting.Item1, out ConfigEntry<T> entry))
                 return setting.Item2 = entry.Value;
             return default(T);
