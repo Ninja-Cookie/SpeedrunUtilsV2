@@ -12,6 +12,25 @@ This utility aims to make speedrunning BRC a lot friendlier, with features such 
 - General FPS configuration for capping or uncapping
 - In-Game FPS Display
 
+## How to install:
+0. Install [LiveSplit](https://livesplit.org/)
+1. Either use [r2modman](https://thunderstore.io/c/bomb-rush-cyberfunk/p/ebkr/r2modman/) and install BepInEx and SpeedrunUtilsV2 from the manager for Bomb Rush Cyberfunk, and start modded, or, if not using r2modman; Manually install [BepInEx](https://github.com/BepInEx/BepInEx/releases) by dragging the archived files from their release archive into your "\BombRushCyberfunk" folder (where your game is installed), which should now have a "BepInEx" folder, and other files that came with it, in the same place as your "Bomb Rush Cyberfunk" executable.
+2. Run the game to generate BepInEx files, then close it.
+3. Get the release of [SpeedrunUtilsV2](https://github.com/Ninja-Cookie/SpeedrunUtilsV2/releases) and place the contents of "plugins" within the archive to the "plugins" folder made by BepInEx at "\BombRushCyberfunk\BepInEx\plugins"
+
 ## How to use:
-1. Either use [r2modman](https://thunderstore.io/c/bomb-rush-cyberfunk/p/ebkr/r2modman/) or manually install [BepInEx](https://github.com/BepInEx/BepInEx/releases) by dragging the archived files directly into your "\BombRushCyberfunk" folder (where your game is installed), which should now have a "BepInEx" folder, and other files that came with it, in the same place as your "Bomb Rush Cyberfunk" executable.
-2. (TODO: ADD RELEASE AND FINISH README)
+1. In LiveSplit, make sure to disable any other form of auto-splitting, such as from the "Edit Splits" menu.
+2. Right-Click LiveSplit, hover "Controls" and select "Start TCP Server", this will allow the plugin to communicate with LiveSplit. (This will need to be done each time you launch LiveSplit)
+3. When launching the game, it should auto-connect to LiveSplit, you can check this by bringing up the menu using F2 (by default), or manually connect from there.
+
+- Splits can be configured In-Game through the menu using F2 (by default), this does not require a restart, and can be changed at any time.
+- Keybinds and Settings can be configured within "\BombRushCyberfunk\BepInEx\config\SpeedrunUtilsV2", and the game must be restarted.
+
+---
+
+###### Note: The plugin has no idea what splits you actually have, it will just do a generic split at any point configured, please make sure your splits on LiveSplit match the configured splits in the plugin.
+
+---
+
+###### Example:
+<img width="542" height="461" alt="image" src="https://github.com/user-attachments/assets/970b96fe-30d2-45c0-a218-d5a1708805bd" />
