@@ -2,7 +2,7 @@
 
 # <p align="center">SpeedrunUtilsV2: A Bomb Rush Cyberfunk Speedrun Utility</p>
 
-<p align="center"><img width="256" height="256" alt="icon" src="https://github.com/user-attachments/assets/fd45c165-e6db-433e-93b1-8e4ba32f0c4f" /></p>
+<p align="center"><img width="256" height="256" alt="icon" src="https://github.com/user-attachments/assets/9dffcbbb-9244-4ea8-ac4c-25220fcaf660" /></p>
 
 **SpeedrunUtilsV2** is a (non-required but very helpful for runners and verifiers) Speedrun Utility for [Bomb Rush Cyberfunk](https://store.steampowered.com/app/1353230/Bomb_Rush_Cyberfunk/), allowed to be used in speedruns of the game.
 This utility aims to make speedrunning BRC a lot friendlier, with features such as:
