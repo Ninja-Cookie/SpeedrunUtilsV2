@@ -25,6 +25,7 @@ This utility aims to make speedrunning BRC a lot friendlier, with features such 
 
 - Splits can be configured In-Game through the menu using F2 (by default), this does not require a restart, and can be changed at any time.
 - Keybinds and Settings can be configured within "\BombRushCyberfunk\BepInEx\config\SpeedrunUtilsV2", and the game must be restarted.
+- The game must be launched with the plugin and BepInEx to first generate the config.
 
 ---
 
