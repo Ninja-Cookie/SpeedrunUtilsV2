@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Color = UnityEngine.Color;
 using FontStyle = UnityEngine.FontStyle;
+using static SpeedrunUtilsV2.UI.UtilsUIColor;
 
 namespace SpeedrunUtilsV2.UI
 {
@@ -84,7 +85,7 @@ namespace SpeedrunUtilsV2.UI
 
         internal static class Setup
         {
-            private static readonly Color TextColor         = Color.white;
+            private static readonly Color TextColor         = color_text;
             private static readonly Color TextColorShadow   = new Color(0f, 0f, 0f, 0.5f);
             private static readonly Color TextColorFps      = new Color(1f, 1f, 1f, 0.8f);
             private static int FontSize = 16;
@@ -208,30 +209,30 @@ namespace SpeedrunUtilsV2.UI
                 switch (buttonType)
                 {
                     case ButtonType.Normal:
-                        normal  .SetPixel(0, 0, new Color(0.467f, 0.525f, 0.596f, 0.98f));
-                        hover   .SetPixel(0, 0, new Color(0.42f, 0.475f, 0.545f, 1f));
-                        active  .SetPixel(0, 0, new Color(0.373f, 0.424f, 0.49f, 1f));
-                        break;
+                        normal  .SetPixel(0, 0, color_button);
+                        hover   .SetPixel(0, 0, color_button_hover);
+                        active  .SetPixel(0, 0, color_button_active);
+                    break;
 
                     case ButtonType.Off:
                         normal  = Normal_BToff;
                         hover   = Hover_BToff;
                         active  = Active_BToff;
 
-                        normal  .SetPixel(0, 0, new Color(0.612f, 0.365f, 0.388f, 0.98f));
-                        hover   .SetPixel(0, 0, new Color(0.565f, 0.315f, 0.337f, 1f));
-                        active  .SetPixel(0, 0, new Color(0.518f, 0.264f, 0.282f, 1f));
-                        break;
+                        normal  .SetPixel(0, 0, color_button_off);
+                        hover   .SetPixel(0, 0, color_button_off_hover);
+                        active  .SetPixel(0, 0, color_button_off_active);
+                    break;
 
                     case ButtonType.On:
                         normal  = Normal_BTon;
                         hover   = Hover_BTon;
                         active  = Active_BTon;
 
-                        normal  .SetPixel(0, 0, new Color(0.357f, 0.616f, 0.392f, 0.98f));
-                        hover   .SetPixel(0, 0, new Color(0.310f, 0.566f, 0.341f, 1f));
-                        active  .SetPixel(0, 0, new Color(0.263f, 0.515f, 0.286f, 1f));
-                        break;
+                        normal  .SetPixel(0, 0, color_button_on);
+                        hover   .SetPixel(0, 0, color_button_on_hover);
+                        active  .SetPixel(0, 0, color_button_on_active);
+                    break;
                 }
 
                 normal  .Apply();

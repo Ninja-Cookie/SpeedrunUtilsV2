@@ -48,6 +48,7 @@
     <Compile Include="UI\UtilsUI.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\UtilsUIColor.cs" />
     <Compile Include="UI\UtilsUIDisplay.cs" />
     <Compile Include="UI\UtilsUIFunctions.cs" />
     <Compile Include="Localization.cs" />
