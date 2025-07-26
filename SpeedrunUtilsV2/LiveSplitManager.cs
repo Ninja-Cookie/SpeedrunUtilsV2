@@ -48,16 +48,6 @@ namespace SpeedrunUtilsV2
                             StageManager                .OnStageInitialized -= GameStatus.UpdateStage;
                             Patches.Patch_Objective     .OnObjectiveChanged -= GameStatus.UpdateObjective;
                         break;
-
-                        case Status.Disconnecting:
-                            if (_connectionStatus == Status.Connected)
-                                value = _connectionStatus;
-                        break;
-
-                        case Status.Connecting:
-                            if (_connectionStatus == Status.Disconnected)
-                                value = _connectionStatus;
-                        break;
                     }
                 }
 

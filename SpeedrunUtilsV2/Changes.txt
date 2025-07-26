@@ -1,0 +1,1 @@
+- Fixed ConnectionStatus not having a "Connecting" and "Disconnecting" state

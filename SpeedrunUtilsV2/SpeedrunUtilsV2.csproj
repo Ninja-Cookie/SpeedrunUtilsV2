@@ -104,5 +104,8 @@
       <HintPath>..\..\..\CommonLibs\UnityEngine.TextRenderingModule.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Changes.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
