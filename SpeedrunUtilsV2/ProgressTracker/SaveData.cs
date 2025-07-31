@@ -93,8 +93,19 @@ namespace SpeedrunUtilsV2.ProgressTracker
             for (int i = 0; i < StageData.Taxis.Length; i++)
             {
                 Reptile.Stage stage = SaveData.ToReptileStage((Stage)i);
-                if (StageData.Taxis.Length >= i + 1)
+                bool flag = StageData.Taxis.Length >= i + 1;
+                if (flag && stage != Reptile.Stage.square)
+                {
                     StageData.Taxis[i] = saveSlot.GetStageProgress(stage).taxiFound ? 100f : 0f;
+                }
+                else if (flag && stage == Reptile.Stage.square)
+                {
+                    float total = saveSlot.GetStageProgress(stage).taxiFound ? 50f : 0f;
+                    if (!saveSlot.taxiLocked)
+                        total += 50f;
+
+                    StageData.Taxis[i] = total;
+                }
             }
 
             if (save)
