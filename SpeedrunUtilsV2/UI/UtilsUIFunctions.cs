@@ -1,6 +1,10 @@
 ﻿using Reptile;
+using SpeedrunUtilsV2.ProgressTracker;
+using System.Linq;
 using System.Text.RegularExpressions;
+using TMPro;
 using UnityEngine;
+using static SpeedrunUtilsV2.ProgressTracker.SaveData;
 using static SpeedrunUtilsV2.UI.UtilsUI;
 
 namespace SpeedrunUtilsV2
@@ -74,6 +78,60 @@ namespace SpeedrunUtilsV2
 
             if (GetActionKeyDown(LiveSplitConfig.Actions.OpenGUI) && windowPropertiesMain != null)
                 GUI_ENABLED = !GUI_ENABLED;
+
+            /* // Debug for tracking progress
+            if (Input.GetKeyDown(KeyCode.F3))
+            {
+                foreach (var spot in WorldHandler.instance.SceneObjectsRegister.grafSpots)
+                {
+                    spot.gameObject.SetActive(true);
+                    spot.MakeOpen();
+                    spot.SetToPlayerGraffiti();
+                }
+
+                WorldHandler.instance.GetCurrentPlayer().EndGraffitiMode(WorldHandler.instance.SceneObjectsRegister.grafSpots.Last());
+            }
+            */
+
+            if (Input.GetKeyDown(KeyCode.F3))
+            {
+                for (int i = 0; i < (int)ProgressTracker.SaveData.Stage.MAX; i++)
+                {
+                    Reptile.Stage stage = ProgressTracker.SaveData.ToReptileStage((SaveData.Stage)i);
+                    ProgressTracker.Tracking.CurrentSaveData.UpdateAll();
+                    Debug.Log("============");
+                    Debug.Log($"-- {ProgressTracker.SaveData.FromReptileStage(stage).ToString()} --");
+                    Debug.Log($"Graffiti:       \t{ProgressTracker.Tracking.CurrentSaveData?.GetPercentage(ProgressTracker.Tracking.CurrentSaveData.StageData.Graffiti, stage)}");
+                    Debug.Log($"Collectables:   \t{ProgressTracker.Tracking.CurrentSaveData?.GetPercentage(ProgressTracker.Tracking.CurrentSaveData.StageData.Collectables, stage)}");
+                    Debug.Log($"Characters:     \t{ProgressTracker.Tracking.CurrentSaveData?.GetPercentage(ProgressTracker.Tracking.CurrentSaveData.StageData.Characters, stage)}");
+                    Debug.Log($"Taxi:           \t{ProgressTracker.Tracking.CurrentSaveData?.GetPercentage(ProgressTracker.Tracking.CurrentSaveData.StageData.Taxis, stage)}");
+                    Debug.Log("============\n");
+                }
+
+                Debug.Log("============");
+                Debug.Log($"-- Total ({ProgressTracker.Tracking.CurrentSaveData?.GetPercentageTotal()}) --");
+                Debug.Log($"Graffiti:       \t{ProgressTracker.Tracking.CurrentSaveData?.GetPercentage(ProgressTracker.Tracking.CurrentSaveData.StageData.Graffiti)}");
+                Debug.Log($"Collectables:   \t{ProgressTracker.Tracking.CurrentSaveData?.GetPercentage(ProgressTracker.Tracking.CurrentSaveData.StageData.Collectables)}");
+                Debug.Log($"Characters:     \t{ProgressTracker.Tracking.CurrentSaveData?.GetPercentage(ProgressTracker.Tracking.CurrentSaveData.StageData.Characters)}");
+                Debug.Log($"Taxis:          \t{ProgressTracker.Tracking.CurrentSaveData?.GetPercentage(ProgressTracker.Tracking.CurrentSaveData.StageData.Taxis)}");
+                Debug.Log("============\n");
+
+                foreach (var item in ProgressTracker.Tracking.CurrentSaveData?.StageData?.CurrentStageCollectableInfo)
+                {
+                    if (item.Item2)
+                        Debug.LogWarning($"{item.Item1}");
+                    else
+                        Debug.LogError($"{item.Item1}");
+                }
+
+                foreach (var item in ProgressTracker.Tracking.CurrentSaveData?.StageData?.CurrentStageCharacterInfo)
+                {
+                    if (item.Item2)
+                        Debug.LogWarning($"{item.Item1}");
+                    else
+                        Debug.LogError($"{item.Item1}");
+                }
+            }
         }
 
         private bool GetActionKeyDown(LiveSplitConfig.Actions action)

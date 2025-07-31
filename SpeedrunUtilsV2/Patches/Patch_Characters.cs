@@ -29,6 +29,8 @@ namespace SpeedrunUtilsV2.Patches
                     GameStatus.ShouldSplit(Splits.CharacterUnlock, true);
                 else if (character == Characters.oldheadPlayer)
                     GameStatus.ShouldSplit(Splits.UnlockOldHead);
+
+                ProgressTracker.Tracking.CurrentSaveData?.UpdateCurrentCharacters();
             }
         }
     }

@@ -104,12 +104,14 @@ namespace SpeedrunUtilsV2
         internal static (string, bool,bool)         SETTINGS_ShowFPS        = ("Show FPS",                      true,   true    );
         internal static (string, int, int)          SETTINGS_FPSSize        = ("FPS Size",                      33,     33      );
         internal static (string, Vector2, Vector2)  SETTINGS_FPSPos         = ("FPS Screen Position",           new Vector2(8f, 4f), new Vector2(8f, 4f));
-        internal static (string, bool, bool)        SETTINGS_UncapLoading   = ("Uncap FPS During Loading",      true, true);
-        internal static (string, bool, bool)        SETTINGS_MouseFix       = ("Enable Fix to Menu Mouse",      true, true);
-        internal static (string, bool, bool)        SETTINGS_DebugMode      = ("Debug Mode",                    false, false);
+        internal static (string, bool, bool)        SETTINGS_UncapLoading   = ("Uncap FPS During Loading",      true,   true    );
+        internal static (string, bool, bool)        SETTINGS_MouseFix       = ("Enable Fix to Menu Mouse",      true,   true    );
+        internal static (string, bool, bool)        SETTINGS_DebugMode      = ("Debug Mode",                    false,  false   );
 
         private const   string          EXTENSION           = ".cfg";
+        internal const  string          EXTENSION_SaveData  = ".sru";
         private const   string          FOLDER_UtilsFolder  = "SpeedrunUtilsV2";
+        private const   string          FOLDER_SaveData     = "SaveData";
         private static  readonly string FILE_Splits         = $"Splits{EXTENSION}";
         private static  readonly string FILE_Keys           = $"Keys{EXTENSION}";
         private static  readonly string FILE_Settings       = $"Settings{EXTENSION}";
@@ -118,6 +120,7 @@ namespace SpeedrunUtilsV2
         private static  readonly string PATH_Splits         = Path.Combine(PATH_UtilsConfig,    FILE_Splits);
         private static  readonly string PATH_Keys           = Path.Combine(PATH_UtilsConfig,    FILE_Keys);
         private static  readonly string PATH_Settings       = Path.Combine(PATH_UtilsConfig,    FILE_Settings);
+        internal static readonly string PATH_SaveData       = Path.Combine(PATH_UtilsConfig,    FOLDER_SaveData);
 
         private const string SECTION_Splits     = "Splits";
         private const string SECTION_Keys       = "Keys";

@@ -34,6 +34,8 @@
     <Compile Include="ConnectionManager.cs" />
     <Compile Include="CutsceneTimer.cs" />
     <Compile Include="GameStatus.cs" />
+    <Compile Include="Patches\Patch_Tracking.cs" />
+    <Compile Include="ProgressTracker\Tracking.cs" />
     <Compile Include="LiveSplitConfig.cs" />
     <Compile Include="LiveSplitManager.cs" />
     <Compile Include="Patches\Patch_CutsceneSkip.cs" />
@@ -45,6 +47,7 @@
     <Compile Include="Patches\Patch_NewGame.cs" />
     <Compile Include="Patches\Patch_Objective.cs" />
     <Compile Include="Patches\Patch_Loading.cs" />
+    <Compile Include="ProgressTracker\SaveData.cs" />
     <Compile Include="UI\UtilsUI.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -76,6 +79,9 @@
     <Reference Include="System.Transactions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>..\..\..\CommonLibs\Unity.TextMeshPro.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\CommonLibs\Minimal\UnityEngine.dll</HintPath>
     </Reference>
@@ -102,6 +108,9 @@
     </Reference>
     <Reference Include="UnityEngine.TextRenderingModule">
       <HintPath>..\..\..\CommonLibs\UnityEngine.TextRenderingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>..\..\..\CommonLibs\UnityEngine.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

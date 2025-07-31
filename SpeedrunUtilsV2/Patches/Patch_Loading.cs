@@ -23,6 +23,8 @@ namespace SpeedrunUtilsV2.Patches
         {
             internal static void Prefix()
             {
+                ProgressTracker.Tracking.CurrentSaveData?.UpdateAll();
+
                 OnExitedLoading?.Invoke();
                 if (!ConnectionManager.IsConnected)
                     ConnectionManager.StartingNewGame = false;

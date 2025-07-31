@@ -43,6 +43,7 @@ namespace SpeedrunUtilsV2
         {
             RefreshSplitsFile();
             SetDefaultSplitStates();
+            ProgressTracker.Tracking.CreateProgressData(saveSlotData.saveSlotId);
             if (ConnectionManager.IsConnected)
                 ConnectionManager.StartingNewGame = true;
         }
