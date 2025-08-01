@@ -25,6 +25,14 @@ namespace SpeedrunUtilsV2.ProgressTracker
                 using (BinaryWriter writer = new BinaryWriter(new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None)))
                     Write(writer);
             }
+
+            if (CurrentSaveData?.StageData != null)
+            {
+                CurrentSaveData.GetPercentageTotal();
+                CurrentSaveData.GetPercentageStageTotal();
+                CurrentSaveData.StageData.CurrentStageGraffiti  = CurrentSaveData.GetPercentage(CurrentSaveData.StageData.Graffiti, Utility.GetCurrentStage());
+                CurrentSaveData.StageData.CurrentStageTaxi      = CurrentSaveData.GetPercentage(CurrentSaveData.StageData.Taxis, Utility.GetCurrentStage());
+            }
         }
 
         internal static SaveData LoadProgressData(int id)

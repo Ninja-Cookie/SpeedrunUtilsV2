@@ -7,11 +7,12 @@ namespace SpeedrunUtilsV2.UI
 {
     internal static class UtilsUI
     {
-        private static bool setup = false;
+        internal static bool setup = false;
 
         private const string WINDOWNAME = "";
 
         private static GUIStyle TEXT;
+        private static GUIStyle TEXT_LEFT;
         private static GUIStyle TEXT_SMALL;
         private static GUIStyle TEXT_FPS;
         private static GUIStyle TEXT_FPS_SHADOW;
@@ -70,6 +71,7 @@ namespace SpeedrunUtilsV2.UI
                 return;
 
             TEXT            = Setup.Text();
+            TEXT_LEFT       = Setup.TextLeft();
             TEXT_SMALL      = Setup.TextSmall();
             TEXT_FPS        = Setup.TextFPS();
             TEXT_FPS_SHADOW = Setup.TextFPSShadow();
@@ -118,6 +120,22 @@ namespace SpeedrunUtilsV2.UI
                 text.alignment          = TextAnchor.MiddleCenter;
                 text.wordWrap           = false;
                 text.fontSize           = FontSize;
+                text.fontStyle          = FontStyle.Bold;
+
+                text.normal.textColor   = TextColor;
+                text.hover.textColor    = TextColor;
+                text.active.textColor   = TextColor;
+
+                return text;
+            }
+
+            internal static GUIStyle TextLeft()
+            {
+                GUIStyle text = new GUIStyle();
+
+                text.alignment          = TextAnchor.MiddleLeft;
+                text.wordWrap           = false;
+                text.fontSize           = (int)(FontSize * 0.9f);
                 text.fontStyle          = FontStyle.Bold;
 
                 text.normal.textColor   = TextColor;
@@ -277,6 +295,17 @@ namespace SpeedrunUtilsV2.UI
         internal static void GUILabel(string text, WindowProperties windowProperties, bool small = false, bool fps = false)
         {
             GUI.Label(windowProperties.ElementRectFinal, text, fps ? TEXT_FPS : small ? TEXT_SMALL : TEXT);
+        }
+
+        internal static void GUILabelLeft(string text, WindowProperties windowProperties)
+        {
+            GUI.Label(windowProperties.ElementRectFinal, text, TEXT_LEFT);
+        }
+
+        internal static void GUILabelTracker(WindowProperties windowProperties, params string[] texts)
+        {
+            foreach (var text in texts)
+                GUI.Label(windowProperties.ElementRectFinal, text, TEXT_LEFT);
         }
 
         internal static void GUILabelFPS(string text, Rect rect, Rect shadow)

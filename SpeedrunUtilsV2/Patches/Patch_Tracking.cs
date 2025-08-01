@@ -72,5 +72,14 @@ namespace SpeedrunUtilsV2.Patches
                 ProgressTracker.Tracking.CurrentSaveData?.UpdateTaxis();
             }
         }
+
+        [HarmonyPatch(typeof(NPC), "UnlockTaxi", MethodType.Normal)]
+        private static class Patch_NPC_UnlockTaxi
+        {
+            internal static void Postfix()
+            {
+                ProgressTracker.Tracking.CurrentSaveData?.UpdateTaxis();
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Reptile;
 using SpeedrunUtilsV2.ProgressTracker;
+using SpeedrunUtilsV2.UI;
 using System.Linq;
 using System.Text.RegularExpressions;
 using TMPro;
@@ -40,6 +41,7 @@ namespace SpeedrunUtilsV2
         private static WindowProperties windowPropertiesMain;
         private static WindowProperties windowPropertiesSplits;
         private static WindowProperties windowPropertiesCredits;
+        internal static WindowProperties windowPropertiesTracker;
         private static Rect fpsRect;
         private static Rect fpsRectShadow;
 
@@ -168,8 +170,32 @@ namespace SpeedrunUtilsV2
             FPSUpdate -= Time.deltaTime;
         }
 
+        private ScreenInfo CurrentScreenInfo;
+        private class ScreenInfo
+        {
+            private const float ReferenceResolution = 1080f;
+
+            internal ScreenInfo(int width, int height)
+            {
+                float newWidth  = ReferenceResolution * ((float)width / (float)height);
+                float scale     = Mathf.Min((float)width / newWidth, (float)height / ReferenceResolution);
+
+                float offsetX   = ((float)width - newWidth * scale) * 0.5f;
+                float offsetY   = ((float)height - ReferenceResolution * scale) * 0.5f;
+
+                this.Resolution = new Vector2Int((int)newWidth, (int)ReferenceResolution);
+                this.Matrix     = Matrix4x4.TRS(new Vector3(offsetX, offsetY, 0), Quaternion.identity, new Vector3(scale, scale, 1f));
+            }
+
+            internal Vector2Int Resolution  { get; private set; }
+            internal Matrix4x4  Matrix      { get; private set; }
+        }
+
         public void OnGUI()
         {
+            if (CurrentScreenInfo?.Matrix != null)
+                GUI.matrix = CurrentScreenInfo.Matrix;
+
             Init();
 
             if (fpsRect != null && fpsRectShadow != null && LiveSplitConfig.SETTINGS_ShowFPS.Item2)
@@ -184,6 +210,8 @@ namespace SpeedrunUtilsV2
 
                 if (GUI_CREDITS_ENABLED)
                     GUIWindow(2, windowPropertiesCredits, GUICredits);
+
+                GUIWindow(3, windowPropertiesTracker, GUITracker);
             }
         }
 
@@ -208,9 +236,14 @@ namespace SpeedrunUtilsV2
 
         private void SetupProperties(int width, int height)
         {
+            CurrentScreenInfo = new ScreenInfo(width, height);
+            width   = CurrentScreenInfo.Resolution.x;
+            height  = CurrentScreenInfo.Resolution.y;
+
             windowPropertiesMain    = new WindowProperties((width * 0.5f) - (350f * 0.5f), 350f);
             windowPropertiesSplits  = new WindowProperties(windowPropertiesMain.WindowX + 350f + 3f, 300f, 18f);
             windowPropertiesCredits = new WindowProperties(windowPropertiesMain.WindowX - 200f - 3f, 200f, 18f);
+            windowPropertiesTracker = new WindowProperties(width - 300f - 18f, 300f, 18f);
             fpsRect                 = new Rect(LiveSplitConfig.SETTINGS_FPSPos.Item2.x, LiveSplitConfig.SETTINGS_FPSPos.Item2.y, width, height);
             fpsRectShadow           = new Rect(LiveSplitConfig.SETTINGS_FPSPos.Item2.x - 2f, LiveSplitConfig.SETTINGS_FPSPos.Item2.y + 2f, width, height);
         }

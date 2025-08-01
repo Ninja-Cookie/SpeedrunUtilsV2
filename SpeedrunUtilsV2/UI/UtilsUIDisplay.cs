@@ -3,6 +3,7 @@ using UnityEngine;
 using static SpeedrunUtilsV2.UI.UtilsUI;
 using static SpeedrunUtilsV2.Localization.UI;
 using static SpeedrunUtilsV2.UI.UtilsUIColor;
+using BepInEx;
 
 namespace SpeedrunUtilsV2
 {
@@ -60,6 +61,38 @@ namespace SpeedrunUtilsV2
             GUILabel($"<color={color_credit_judah}>Judah Caruso</color>", windowPropertiesCredits);
 
             Cleanup(windowPropertiesCredits);
+        }
+
+        // TODO:
+        // Add UI scaling for resolution.
+        // Remove Debug functions.
+        // Add valid stage bool to save data and check it for display.
+        internal static void GUITracker(int windowID)
+        {
+            var stageData = ProgressTracker.Tracking.CurrentSaveData?.StageData;
+            if (stageData != null)
+            {
+                GUILabelTracker
+                (
+                    windowPropertiesTracker,
+                    $"Total:    \t{stageData.CurrentTotal}",
+                    $"Graffiti: \t{stageData.CurrentStageGraffiti}",
+                    $"Taxi:     \t{stageData.CurrentStageTaxi}"
+                );
+
+                foreach (var item in stageData.CurrentStageCollectableInfo)
+                    GUILabelLeft($"<color={GetColorCollected(item.Item2)}>{item.Item1}</color>", windowPropertiesTracker);
+
+                foreach (var item in stageData.CurrentStageCharacterInfo)
+                    GUILabelLeft($"<color={GetColorCollected(item.Item2)}>{item.Item1}</color>", windowPropertiesTracker);
+            }
+
+            Cleanup(windowPropertiesTracker);
+        }
+
+        private static string GetColorCollected(bool collected = false)
+        {
+            return collected ? color_text_connect : color_text_disconnect;
         }
     }
 }

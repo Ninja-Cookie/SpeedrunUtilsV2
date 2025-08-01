@@ -2,10 +2,7 @@
 using Reptile.Phone;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
-using UnityEngine;
 
 namespace SpeedrunUtilsV2.ProgressTracker
 {
@@ -26,6 +23,11 @@ namespace SpeedrunUtilsV2.ProgressTracker
             internal float[] Characters     = new float[(int)Stage.MAX];
             internal float[] Taxis          = new float[(int)Stage.MAX];
 
+            internal string CurrentTotal            = string.Empty;
+            internal string CurrentStageTotal       = string.Empty;
+            internal string CurrentStageGraffiti    = string.Empty;
+            internal string CurrentStageTaxi        = string.Empty;
+
             internal (string, bool)[] CurrentStageCollectableInfo   = Array.Empty<(string, bool)>();
             internal (string, bool)[] CurrentStageCharacterInfo     = Array.Empty<(string, bool)>();
         }
@@ -43,7 +45,25 @@ namespace SpeedrunUtilsV2.ProgressTracker
                 GetProgress(StageData.Taxis)
             };
 
-            return GetPercentage(total);
+            return StageData.CurrentTotal = GetPercentage(total);
+        }
+
+        internal string GetPercentageStageTotal()
+        {
+            int stageID = (int)FromReptileStage(Utility.GetCurrentStage());
+
+            if (StageData == null || StageData.Graffiti?.Length < stageID + 1 || StageData.Collectables?.Length < stageID + 1 || StageData.Characters?.Length < stageID + 1 || StageData.Taxis?.Length < stageID + 1)
+                return $"{(0f).ToString("##0.00")}%";
+
+            float[] total = new float[4]
+            {
+                StageData.Graffiti[stageID],
+                StageData.Collectables[stageID],
+                StageData.Characters[stageID],
+                StageData.Taxis[stageID]
+            };
+
+            return StageData.CurrentStageTotal = GetPercentage(total);
         }
 
         internal string GetPercentage(float[] data, Reptile.Stage? stage = null)
@@ -82,6 +102,9 @@ namespace SpeedrunUtilsV2.ProgressTracker
             SaveSlotData saveSlot = Core.Instance?.SaveManager?.CurrentSaveSlot;
             if (saveSlot != null)
                 Tracking.SaveProgressData(saveSlot.saveSlotId);
+
+            if (Plugin.windowPropertiesTracker != null)
+                Plugin.windowPropertiesTracker.FinalIndex = 0;
         }
 
         internal void UpdateTaxis(bool save = true)
@@ -271,7 +294,7 @@ namespace SpeedrunUtilsV2.ProgressTracker
                 case Reptile.Stage.pyramid:     return Stage.Pyramid;
                 case Reptile.Stage.osaka:       return Stage.Mataan;
 
-                default: return Stage.NONE;
+                default: return Stage.MAX;
             }
         }
 
@@ -287,7 +310,7 @@ namespace SpeedrunUtilsV2.ProgressTracker
                 case Stage.Pyramid: return Reptile.Stage.pyramid;
                 case Stage.Mataan:  return Reptile.Stage.osaka;
 
-                default: return Reptile.Stage.NONE;
+                default: return Reptile.Stage.MAX;
             }
         }
 
