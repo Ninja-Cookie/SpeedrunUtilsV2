@@ -18,6 +18,7 @@ namespace SpeedrunUtilsV2
             internal static string s_development        = "Development";
             internal static string s_research           = "Previous Research";
             internal static string s_originalTools      = "Original Tools";
+            internal static string s_tracker            = "Progress Tracker";
         }
 
         internal static class Splits

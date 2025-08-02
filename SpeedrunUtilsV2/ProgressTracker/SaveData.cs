@@ -28,6 +28,8 @@ namespace SpeedrunUtilsV2.ProgressTracker
             internal string CurrentStageGraffiti    = string.Empty;
             internal string CurrentStageTaxi        = string.Empty;
 
+            internal bool StageValid = false;
+
             internal (string, bool)[] CurrentStageCollectableInfo   = Array.Empty<(string, bool)>();
             internal (string, bool)[] CurrentStageCharacterInfo     = Array.Empty<(string, bool)>();
         }

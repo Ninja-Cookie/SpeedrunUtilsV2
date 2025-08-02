@@ -25,6 +25,9 @@ namespace SpeedrunUtilsV2
             if (GUIButton($"{s_splits}", GUI_SPLITS_ENABLED ? Setup.ButtonType.On : Setup.ButtonType.Off, windowPropertiesMain))
                 GUI_SPLITS_ENABLED = !GUI_SPLITS_ENABLED;
 
+            if (GUIButton($"{s_tracker}", GUI_TRACKER_ENABLED ? Setup.ButtonType.On : Setup.ButtonType.Off, windowPropertiesMain))
+                ToggleProgressTracker();
+
             if (GUIButton($"{s_credits}", GUI_CREDITS_ENABLED ? Setup.ButtonType.On : Setup.ButtonType.Off, windowPropertiesMain))
                 GUI_CREDITS_ENABLED = !GUI_CREDITS_ENABLED;
 
@@ -63,14 +66,10 @@ namespace SpeedrunUtilsV2
             Cleanup(windowPropertiesCredits);
         }
 
-        // TODO:
-        // Add UI scaling for resolution.
-        // Remove Debug functions.
-        // Add valid stage bool to save data and check it for display.
         internal static void GUITracker(int windowID)
         {
             var stageData = ProgressTracker.Tracking.CurrentSaveData?.StageData;
-            if (stageData != null)
+            if (stageData != null && stageData.StageValid)
             {
                 GUILabelTracker
                 (
@@ -85,6 +84,10 @@ namespace SpeedrunUtilsV2
 
                 foreach (var item in stageData.CurrentStageCharacterInfo)
                     GUILabelLeft($"<color={GetColorCollected(item.Item2)}>{item.Item1}</color>", windowPropertiesTracker);
+            }
+            else if (stageData != null)
+            {
+                GUILabelLeft($"Waiting for stage...", windowPropertiesTracker);
             }
 
             Cleanup(windowPropertiesTracker);

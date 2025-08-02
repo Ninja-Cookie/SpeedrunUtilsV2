@@ -79,26 +79,30 @@ namespace SpeedrunUtilsV2
         {
             OpenGUI,
             LimitFPS,
-            UncapFPS
+            UncapFPS,
+            OpenTracker
         }
 
         internal static readonly Dictionary<Actions, KeyCode> ActionKeys = new Dictionary<Actions, KeyCode>()
         {
             { Actions.OpenGUI,      KeyCode.F2  },
             { Actions.LimitFPS,     KeyCode.L   },
-            { Actions.UncapFPS,     KeyCode.O   }
+            { Actions.UncapFPS,     KeyCode.O   },
+            { Actions.OpenTracker,  KeyCode.F3  }
         };
 
         internal static readonly Dictionary<Actions, KeyCode> ActionKeysDefault = new Dictionary<Actions, KeyCode>()
         {
             { Actions.OpenGUI,      KeyCode.F2  },
             { Actions.LimitFPS,     KeyCode.L   },
-            { Actions.UncapFPS,     KeyCode.O   }
+            { Actions.UncapFPS,     KeyCode.O   },
+            { Actions.OpenTracker,  KeyCode.F3  }
         };
 
         internal static (string, int, int)          SETTINGS_DefaultFPS     = ("Default FPS",                   200,    200     );
         internal static (string, int, int)          SETTINGS_LimitValue     = ("Limit FPS Value",               30,     30      );
         internal static (string, bool,bool)         SETTINGS_Uncap          = ("Start Uncapped",                false,  false   );
+        internal static (string, bool,bool)         SETTINGS_Tracker        = ("Start Tracker Open",            false,  false   );
         internal static (string, bool,bool)         SETTINGS_Skip           = ("Skip Unskippable Cutscenes",    true,   true    );
         internal static (string, bool,bool)         SETTINGS_MashEnabled    = ("AutoMash Unskippable Cutscenes",true,   true    );
         internal static (string, bool,bool)         SETTINGS_ShowFPS        = ("Show FPS",                      true,   true    );
@@ -160,6 +164,12 @@ namespace SpeedrunUtilsV2
             }
         }
 
+        internal static void UpdateProgressTrackerState(bool value)
+        {
+            if (CONFIG_Settings.TryGetEntry(SECTION_Settings, SETTINGS_Tracker.Item1, out ConfigEntry<bool> entry))
+                entry.Value = value;
+        }
+
         private static void CreateSplitsFile()
         {
             for (int i = 0; i < CurrentSplits.Count; i++)
@@ -194,6 +204,7 @@ namespace SpeedrunUtilsV2
 
             BindSetting(ref SETTINGS_LimitValue);
             BindSetting(ref SETTINGS_Uncap);
+            BindSetting(ref SETTINGS_Tracker);
             BindSetting(ref SETTINGS_Skip);
             BindSetting(ref SETTINGS_MashEnabled);
             BindSetting(ref SETTINGS_ShowFPS);

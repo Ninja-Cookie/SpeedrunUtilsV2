@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using UnityEngine;
 
 namespace SpeedrunUtilsV2.ProgressTracker
 {
@@ -26,12 +25,19 @@ namespace SpeedrunUtilsV2.ProgressTracker
                     Write(writer);
             }
 
-            if (CurrentSaveData?.StageData != null)
+            var stageData = CurrentSaveData?.StageData;
+            if (stageData != null)
             {
+                stageData.StageValid = SaveData.FromReptileStage(Utility.GetCurrentStage()) != SaveData.Stage.MAX;
+
                 CurrentSaveData.GetPercentageTotal();
-                CurrentSaveData.GetPercentageStageTotal();
-                CurrentSaveData.StageData.CurrentStageGraffiti  = CurrentSaveData.GetPercentage(CurrentSaveData.StageData.Graffiti, Utility.GetCurrentStage());
-                CurrentSaveData.StageData.CurrentStageTaxi      = CurrentSaveData.GetPercentage(CurrentSaveData.StageData.Taxis, Utility.GetCurrentStage());
+
+                if (stageData.StageValid)
+                {
+                    CurrentSaveData.GetPercentageStageTotal();
+                    CurrentSaveData.StageData.CurrentStageGraffiti  = CurrentSaveData.GetPercentage(stageData.Graffiti, Utility.GetCurrentStage());
+                    CurrentSaveData.StageData.CurrentStageTaxi      = CurrentSaveData.GetPercentage(stageData.Taxis,    Utility.GetCurrentStage());
+                }
             }
         }
 

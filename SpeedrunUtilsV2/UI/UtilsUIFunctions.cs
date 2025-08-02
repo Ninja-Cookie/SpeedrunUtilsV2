@@ -1,4 +1,5 @@
-﻿using Reptile;
+﻿using BepInEx.Configuration;
+using Reptile;
 using SpeedrunUtilsV2.ProgressTracker;
 using SpeedrunUtilsV2.UI;
 using System.Linq;
@@ -27,7 +28,7 @@ namespace SpeedrunUtilsV2
             }
         }
 
-
+        private static bool GUI_TRACKER_ENABLED = false;
         private static bool GUI_SPLITS_ENABLED  = false;
         private static bool GUI_CREDITS_ENABLED = false;
 
@@ -68,6 +69,11 @@ namespace SpeedrunUtilsV2
             Limited
         }
 
+        public void Start()
+        {
+            GUI_TRACKER_ENABLED = LiveSplitConfig.SETTINGS_Tracker.Item2;
+        }
+
         public void Update()
         {
             if (GetActionKeyDown(LiveSplitConfig.Actions.UncapFPS))
@@ -81,59 +87,8 @@ namespace SpeedrunUtilsV2
             if (GetActionKeyDown(LiveSplitConfig.Actions.OpenGUI) && windowPropertiesMain != null)
                 GUI_ENABLED = !GUI_ENABLED;
 
-            /* // Debug for tracking progress
-            if (Input.GetKeyDown(KeyCode.F3))
-            {
-                foreach (var spot in WorldHandler.instance.SceneObjectsRegister.grafSpots)
-                {
-                    spot.gameObject.SetActive(true);
-                    spot.MakeOpen();
-                    spot.SetToPlayerGraffiti();
-                }
-
-                WorldHandler.instance.GetCurrentPlayer().EndGraffitiMode(WorldHandler.instance.SceneObjectsRegister.grafSpots.Last());
-            }
-            */
-
-            if (Input.GetKeyDown(KeyCode.F3))
-            {
-                for (int i = 0; i < (int)ProgressTracker.SaveData.Stage.MAX; i++)
-                {
-                    Reptile.Stage stage = ProgressTracker.SaveData.ToReptileStage((SaveData.Stage)i);
-                    ProgressTracker.Tracking.CurrentSaveData.UpdateAll();
-                    Debug.Log("============");
-                    Debug.Log($"-- {ProgressTracker.SaveData.FromReptileStage(stage).ToString()} --");
-                    Debug.Log($"Graffiti:       \t{ProgressTracker.Tracking.CurrentSaveData?.GetPercentage(ProgressTracker.Tracking.CurrentSaveData.StageData.Graffiti, stage)}");
-                    Debug.Log($"Collectables:   \t{ProgressTracker.Tracking.CurrentSaveData?.GetPercentage(ProgressTracker.Tracking.CurrentSaveData.StageData.Collectables, stage)}");
-                    Debug.Log($"Characters:     \t{ProgressTracker.Tracking.CurrentSaveData?.GetPercentage(ProgressTracker.Tracking.CurrentSaveData.StageData.Characters, stage)}");
-                    Debug.Log($"Taxi:           \t{ProgressTracker.Tracking.CurrentSaveData?.GetPercentage(ProgressTracker.Tracking.CurrentSaveData.StageData.Taxis, stage)}");
-                    Debug.Log("============\n");
-                }
-
-                Debug.Log("============");
-                Debug.Log($"-- Total ({ProgressTracker.Tracking.CurrentSaveData?.GetPercentageTotal()}) --");
-                Debug.Log($"Graffiti:       \t{ProgressTracker.Tracking.CurrentSaveData?.GetPercentage(ProgressTracker.Tracking.CurrentSaveData.StageData.Graffiti)}");
-                Debug.Log($"Collectables:   \t{ProgressTracker.Tracking.CurrentSaveData?.GetPercentage(ProgressTracker.Tracking.CurrentSaveData.StageData.Collectables)}");
-                Debug.Log($"Characters:     \t{ProgressTracker.Tracking.CurrentSaveData?.GetPercentage(ProgressTracker.Tracking.CurrentSaveData.StageData.Characters)}");
-                Debug.Log($"Taxis:          \t{ProgressTracker.Tracking.CurrentSaveData?.GetPercentage(ProgressTracker.Tracking.CurrentSaveData.StageData.Taxis)}");
-                Debug.Log("============\n");
-
-                foreach (var item in ProgressTracker.Tracking.CurrentSaveData?.StageData?.CurrentStageCollectableInfo)
-                {
-                    if (item.Item2)
-                        Debug.LogWarning($"{item.Item1}");
-                    else
-                        Debug.LogError($"{item.Item1}");
-                }
-
-                foreach (var item in ProgressTracker.Tracking.CurrentSaveData?.StageData?.CurrentStageCharacterInfo)
-                {
-                    if (item.Item2)
-                        Debug.LogWarning($"{item.Item1}");
-                    else
-                        Debug.LogError($"{item.Item1}");
-                }
-            }
+            if (GetActionKeyDown(LiveSplitConfig.Actions.OpenTracker) && windowPropertiesMain != null)
+                ToggleProgressTracker();
         }
 
         private bool GetActionKeyDown(LiveSplitConfig.Actions action)
@@ -210,9 +165,10 @@ namespace SpeedrunUtilsV2
 
                 if (GUI_CREDITS_ENABLED)
                     GUIWindow(2, windowPropertiesCredits, GUICredits);
-
-                GUIWindow(3, windowPropertiesTracker, GUITracker);
             }
+
+            if (GUI_TRACKER_ENABLED)
+                GUIWindow(3, windowPropertiesTracker, GUITracker);
         }
 
         private     static int      _fpsInt { get { if (int.TryParse(_fps, out int result)) return result; return Application.targetFrameRate; } }
@@ -285,6 +241,12 @@ namespace SpeedrunUtilsV2
             bool value = GUIToggle(LiveSplitConfig.CurrentSplits[split].Item1, LiveSplitConfig.CurrentSplits[split].Item3, windowPropertiesSplits);
             if (LiveSplitConfig.CurrentSplits.TryGetValue(split, out var currentValue) && value != currentValue.Item1)
                 LiveSplitConfig.UpdateSplitsFile(split, value);
+        }
+
+        internal static void ToggleProgressTracker()
+        {
+            GUI_TRACKER_ENABLED = !GUI_TRACKER_ENABLED;
+            LiveSplitConfig.UpdateProgressTrackerState(LiveSplitConfig.SETTINGS_Tracker.Item2 = GUI_TRACKER_ENABLED);
         }
     }
 }
