@@ -47,6 +47,13 @@ namespace SpeedrunUtilsV2
             internal static string s_FinalBossDefeated  = "Defeated Final Boss";
         }
 
+        internal static class Tracking
+        {
+            internal static string s_total      = "Game Total";
+            internal static string s_graffiti   = "Stage Graffiti";
+            internal static string s_taxi       = "Stage Taxi";
+        }
+
         internal static class Descriptions
         {
             internal static string s_mouseFix           = "Makes it so the mouse does not take priority of selected items if currently using a controller";

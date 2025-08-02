@@ -2,6 +2,7 @@
 using UnityEngine;
 using static SpeedrunUtilsV2.UI.UtilsUI;
 using static SpeedrunUtilsV2.Localization.UI;
+using static SpeedrunUtilsV2.Localization.Tracking;
 using static SpeedrunUtilsV2.UI.UtilsUIColor;
 using BepInEx;
 
@@ -77,9 +78,9 @@ namespace SpeedrunUtilsV2
                 GUILabelTracker
                 (
                     windowPropertiesTracker,
-                    $"Total:    \t{stageData.CurrentTotal}",
-                    $"Graffiti: \t{stageData.CurrentStageGraffiti}",
-                    $"Taxi:     \t{stageData.CurrentStageTaxi}"
+                    $"{s_total}:    \t{stageData.CurrentTotal}",
+                    $"{s_graffiti}: \t{stageData.CurrentStageGraffiti}",
+                    $"{s_taxi}:     \t{stageData.CurrentStageTaxi}"
                 );
 
                 foreach (var item in stageData.CurrentStageCollectableInfo)
