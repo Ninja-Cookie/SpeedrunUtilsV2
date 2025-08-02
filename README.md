@@ -14,6 +14,12 @@ This utility aims to make speedrunning BRC a lot friendlier, with features such 
 - General FPS configuration for capping or uncapping
 - In-Game FPS Display
 
+## Now with progress tracking!
+<img width="313" height="332" alt="image" src="https://github.com/user-attachments/assets/0351ba1b-19ed-428b-abb7-a017e20eebec" />
+
+Use F3 (by default, or from the F2 menu) to toggle the tracker! You must allow game tracking from the F2 menu or config settings before using it.
+This will keep track of your game progress and save it, displaying all the game progress it has tracked for you. Note that this only updates once you have entered a stage for the first time with progress tracking enabled for the loaded save file.
+
 ## How to install:
 0. Install [LiveSplit](https://livesplit.org/)
 1. Either use [r2modman](https://thunderstore.io/c/bomb-rush-cyberfunk/p/ebkr/r2modman/) and install BepInEx and SpeedrunUtilsV2 from the manager for Bomb Rush Cyberfunk, and start modded, or, if not using r2modman; Manually install [BepInEx](https://github.com/BepInEx/BepInEx/releases) by dragging the archived files from their release archive into your "\BombRushCyberfunk" folder (where your game is installed), which should now have a "BepInEx" folder, and other files that came with it, in the same place as your "Bomb Rush Cyberfunk" executable.
