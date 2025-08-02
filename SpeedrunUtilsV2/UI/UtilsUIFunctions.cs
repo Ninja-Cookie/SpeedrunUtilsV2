@@ -248,5 +248,12 @@ namespace SpeedrunUtilsV2
             GUI_TRACKER_ENABLED = !GUI_TRACKER_ENABLED;
             LiveSplitConfig.UpdateProgressTrackerState(LiveSplitConfig.SETTINGS_Tracker.Item2 = GUI_TRACKER_ENABLED);
         }
+
+        internal static void ToggleProgressTracking()
+        {
+            LiveSplitConfig.UpdateProgressTrackingState(LiveSplitConfig.SETTINGS_Tracking.Item2 = !LiveSplitConfig.SETTINGS_Tracking.Item2);
+            if (LiveSplitConfig.SETTINGS_Tracking.Item2)
+                ProgressTracker.Tracking.CurrentSaveData?.UpdateAll();
+        }
     }
 }

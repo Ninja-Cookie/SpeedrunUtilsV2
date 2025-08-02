@@ -28,6 +28,9 @@ namespace SpeedrunUtilsV2
             if (GUIButton($"{s_tracker}", GUI_TRACKER_ENABLED ? Setup.ButtonType.On : Setup.ButtonType.Off, windowPropertiesMain))
                 ToggleProgressTracker();
 
+            if (GUIButton($"{s_tracking}", LiveSplitConfig.SETTINGS_Tracking.Item2 ? Setup.ButtonType.On : Setup.ButtonType.Off, windowPropertiesMain))
+                ToggleProgressTracking();
+
             if (GUIButton($"{s_credits}", GUI_CREDITS_ENABLED ? Setup.ButtonType.On : Setup.ButtonType.Off, windowPropertiesMain))
                 GUI_CREDITS_ENABLED = !GUI_CREDITS_ENABLED;
 
@@ -69,7 +72,7 @@ namespace SpeedrunUtilsV2
         internal static void GUITracker(int windowID)
         {
             var stageData = ProgressTracker.Tracking.CurrentSaveData?.StageData;
-            if (stageData != null && stageData.StageValid)
+            if (LiveSplitConfig.SETTINGS_Tracking.Item2 && stageData != null && stageData.StageValid)
             {
                 GUILabelTracker
                 (
@@ -85,9 +88,13 @@ namespace SpeedrunUtilsV2
                 foreach (var item in stageData.CurrentStageCharacterInfo)
                     GUILabelLeft($"<color={GetColorCollected(item.Item2)}>{item.Item1}</color>", windowPropertiesTracker);
             }
-            else if (stageData != null)
+            else if (LiveSplitConfig.SETTINGS_Tracking.Item2 && stageData != null)
             {
                 GUILabelLeft($"Waiting for stage...", windowPropertiesTracker);
+            }
+            else if (!LiveSplitConfig.SETTINGS_Tracking.Item2)
+            {
+                GUILabelLeft($"Tracking Disabled...", windowPropertiesTracker);
             }
 
             Cleanup(windowPropertiesTracker);
@@ -97,5 +104,7 @@ namespace SpeedrunUtilsV2
         {
             return collected ? color_text_connect : color_text_disconnect;
         }
+
+        // ADD CHECK FOR TRACKING
     }
 }

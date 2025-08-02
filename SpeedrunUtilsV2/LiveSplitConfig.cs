@@ -103,6 +103,7 @@ namespace SpeedrunUtilsV2
         internal static (string, int, int)          SETTINGS_LimitValue     = ("Limit FPS Value",               30,     30      );
         internal static (string, bool,bool)         SETTINGS_Uncap          = ("Start Uncapped",                false,  false   );
         internal static (string, bool,bool)         SETTINGS_Tracker        = ("Start Tracker Open",            false,  false   );
+        internal static (string, bool,bool)         SETTINGS_Tracking       = ("Tracking Game Progress",        false,  false   );
         internal static (string, bool,bool)         SETTINGS_Skip           = ("Skip Unskippable Cutscenes",    true,   true    );
         internal static (string, bool,bool)         SETTINGS_MashEnabled    = ("AutoMash Unskippable Cutscenes",true,   true    );
         internal static (string, bool,bool)         SETTINGS_ShowFPS        = ("Show FPS",                      true,   true    );
@@ -170,6 +171,12 @@ namespace SpeedrunUtilsV2
                 entry.Value = value;
         }
 
+        internal static void UpdateProgressTrackingState(bool value)
+        {
+            if (CONFIG_Settings.TryGetEntry(SECTION_Settings, SETTINGS_Tracking.Item1, out ConfigEntry<bool> entry))
+                entry.Value = value;
+        }
+
         private static void CreateSplitsFile()
         {
             for (int i = 0; i < CurrentSplits.Count; i++)
@@ -205,6 +212,7 @@ namespace SpeedrunUtilsV2
             BindSetting(ref SETTINGS_LimitValue);
             BindSetting(ref SETTINGS_Uncap);
             BindSetting(ref SETTINGS_Tracker);
+            BindSetting(ref SETTINGS_Tracking);
             BindSetting(ref SETTINGS_Skip);
             BindSetting(ref SETTINGS_MashEnabled);
             BindSetting(ref SETTINGS_ShowFPS);

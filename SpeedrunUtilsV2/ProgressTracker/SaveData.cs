@@ -96,6 +96,9 @@ namespace SpeedrunUtilsV2.ProgressTracker
 
         internal void UpdateAll()
         {
+            if (!LiveSplitConfig.SETTINGS_Tracking.Item2)
+                return;
+
             UpdateTaxis(false);
             UpdateCurrentStageGraffiti(false);
             UpdateCurrentStageCollectables(false);
@@ -343,7 +346,7 @@ namespace SpeedrunUtilsV2.ProgressTracker
             { Characters.wideKid,               Reptile.Stage.tower     },
             { Characters.medusa,                Reptile.Stage.tower     },
 
-            { Characters.eightBallBoss,         Reptile.Stage.Mall      },
+            { Characters.eightBall,             Reptile.Stage.Mall      },
             { Characters.bunGirl,               Reptile.Stage.Mall      },
 
             { Characters.pufferGirl,            Reptile.Stage.pyramid   },

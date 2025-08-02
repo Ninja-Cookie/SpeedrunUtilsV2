@@ -30,7 +30,8 @@ namespace SpeedrunUtilsV2.Patches
                 else if (character == Characters.oldheadPlayer)
                     GameStatus.ShouldSplit(Splits.UnlockOldHead);
 
-                ProgressTracker.Tracking.CurrentSaveData?.UpdateCurrentCharacters();
+                if (LiveSplitConfig.SETTINGS_Tracking.Item2)
+                    ProgressTracker.Tracking.CurrentSaveData?.UpdateCurrentCharacters();
             }
         }
     }

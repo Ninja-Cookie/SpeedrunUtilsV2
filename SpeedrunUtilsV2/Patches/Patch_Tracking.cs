@@ -1,7 +1,6 @@
 ﻿using HarmonyLib;
 using Reptile;
 using SpeedrunUtilsV2.ProgressTracker;
-using static SpeedrunUtilsV2.ProgressTracker.SaveData;
 
 namespace SpeedrunUtilsV2.Patches
 {
@@ -12,7 +11,7 @@ namespace SpeedrunUtilsV2.Patches
         {
             internal static void Postfix(GraffitiSpot graffitiSpot)
             {
-                if (graffitiSpot.topCrew == Crew.PLAYERS || graffitiSpot.topCrew == Crew.ROGUE)
+                if (LiveSplitConfig.SETTINGS_Tracking.Item2 && (graffitiSpot.topCrew == Crew.PLAYERS || graffitiSpot.topCrew == Crew.ROGUE))
                     ProgressTracker.Tracking.CurrentSaveData?.UpdateCurrentStageGraffiti();
             }
         }
@@ -22,6 +21,9 @@ namespace SpeedrunUtilsV2.Patches
         {
             internal static void Postfix(Pickup.PickUpType pickupType)
             {
+                if (!LiveSplitConfig.SETTINGS_Tracking.Item2)
+                    return;
+
                 switch (pickupType)
                 {
                     case Pickup.PickUpType.MAP:
@@ -48,11 +50,6 @@ namespace SpeedrunUtilsV2.Patches
         private static void LoadProgressData(int slotId)
         {
             SaveData data = ProgressTracker.Tracking.LoadProgressData(slotId);
-
-            for (int i = 0; i < data.StageData.Graffiti.Length; i++)
-            {
-                SaveData.Stage stage = (SaveData.Stage)i;
-            }
         }
 
         [HarmonyPatch(typeof(TaxiUI), "TaxiFound", MethodType.Normal)]
@@ -60,7 +57,8 @@ namespace SpeedrunUtilsV2.Patches
         {
             internal static void Postfix()
             {
-                ProgressTracker.Tracking.CurrentSaveData?.UpdateTaxis();
+                if (LiveSplitConfig.SETTINGS_Tracking.Item2)
+                    ProgressTracker.Tracking.CurrentSaveData?.UpdateTaxis();
             }
         }
 
@@ -69,7 +67,8 @@ namespace SpeedrunUtilsV2.Patches
         {
             internal static void Postfix()
             {
-                ProgressTracker.Tracking.CurrentSaveData?.UpdateTaxis();
+                if (LiveSplitConfig.SETTINGS_Tracking.Item2)
+                    ProgressTracker.Tracking.CurrentSaveData?.UpdateTaxis();
             }
         }
 
@@ -78,7 +77,8 @@ namespace SpeedrunUtilsV2.Patches
         {
             internal static void Postfix()
             {
-                ProgressTracker.Tracking.CurrentSaveData?.UpdateTaxis();
+                if (LiveSplitConfig.SETTINGS_Tracking.Item2)
+                    ProgressTracker.Tracking.CurrentSaveData?.UpdateTaxis();
             }
         }
     }
